@@ -5,7 +5,7 @@ import { Music, Camera, Trash2, Upload, LogOut, Lock, Flame } from "lucide-react
 import { useStore, actions } from "@/lib/store";
 
 export const Route = createFileRoute("/portal-rpgm-2026-x9k")({
-  head: () => ({ meta: [{ title: "Admin — Risen Power" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({ meta: [{ title: "Portal" }, { name: "robots", content: "noindex, nofollow" }] }),
   component: Admin,
 });
 
@@ -47,8 +47,7 @@ function Login({ onSuccess }: { onSuccess: () => void }) {
           {err && <p className="text-xs text-destructive">{err}</p>}
           <button type="submit" className="w-full rounded-md bg-navy text-white py-3 text-sm font-medium hover:opacity-90">Sign In</button>
         </form>
-        <p className="mt-5 text-[10px] text-center text-navy-muted">Default: admin / risenpower2026</p>
-        <Link to="/" className="block mt-3 text-center text-xs text-navy-muted hover:text-navy">← Back to site</Link>
+        <Link to="/" className="block mt-5 text-center text-xs text-navy-muted hover:text-navy">← Back to site</Link>
       </div>
     </div>
   );
