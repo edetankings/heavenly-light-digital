@@ -60,8 +60,8 @@ export const actions = {
   setLiveUrl: (u: string) => setState((p) => ({ ...p, liveUrl: u })),
 };
 
-export const useHydrated = () => {
-  const s = useStore();
-  const [h, setH] = (await import("react")).useState ? (() => { const r = require("react"); const [a, b] = r.useState(false); r.useEffect(() => b(true), []); return [a, b] as const; })() : [true, () => {}];
-  return h ? s : seed;
+export const useMounted = () => {
+  const [m, setM] = useState(false);
+  useEffect(() => setM(true), []);
+  return m;
 };
