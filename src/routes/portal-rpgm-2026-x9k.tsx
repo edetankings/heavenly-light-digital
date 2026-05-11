@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import { Music, Camera, Trash2, Upload, LogOut, Lock, Flame } from "lucide-react";
 import { useStore, actions } from "@/lib/store";
 
-export const Route = createFileRoute("/admin")({
+export const Route = createFileRoute("/portal-rpgm-2026-x9k")({
   head: () => ({ meta: [{ title: "Admin — Risen Power" }, { name: "robots", content: "noindex" }] }),
   component: Admin,
 });
