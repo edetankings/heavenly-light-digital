@@ -70,7 +70,7 @@ function RootShell({ children }: { children: React.ReactNode }) {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const { location } = useRouterState();
-  const isAdmin = location.pathname.startsWith("/admin");
+  const isAdmin = location.pathname.startsWith("/portal-rpgm-2026-x9k");
   return (
     <QueryClientProvider client={queryClient}>
       {!isAdmin && <Navbar />}
