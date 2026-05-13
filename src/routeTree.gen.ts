@@ -10,7 +10,6 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SermonsRouteImport } from './routes/sermons'
-import { Route as PortalRpgm2026X9kRouteImport } from './routes/portal-rpgm-2026-x9k'
 import { Route as LiveRouteImport } from './routes/live'
 import { Route as GalleryRouteImport } from './routes/gallery'
 import { Route as EventsRouteImport } from './routes/events'
@@ -23,11 +22,6 @@ import { Route as IndexRouteImport } from './routes/index'
 const SermonsRoute = SermonsRouteImport.update({
   id: '/sermons',
   path: '/sermons',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PortalRpgm2026X9kRoute = PortalRpgm2026X9kRouteImport.update({
-  id: '/portal-rpgm-2026-x9k',
-  path: '/portal-rpgm-2026-x9k',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LiveRoute = LiveRouteImport.update({
@@ -80,7 +74,6 @@ export interface FileRoutesByFullPath {
   '/events': typeof EventsRoute
   '/gallery': typeof GalleryRoute
   '/live': typeof LiveRoute
-  '/portal-rpgm-2026-x9k': typeof PortalRpgm2026X9kRoute
   '/sermons': typeof SermonsRoute
 }
 export interface FileRoutesByTo {
@@ -92,7 +85,6 @@ export interface FileRoutesByTo {
   '/events': typeof EventsRoute
   '/gallery': typeof GalleryRoute
   '/live': typeof LiveRoute
-  '/portal-rpgm-2026-x9k': typeof PortalRpgm2026X9kRoute
   '/sermons': typeof SermonsRoute
 }
 export interface FileRoutesById {
@@ -105,7 +97,6 @@ export interface FileRoutesById {
   '/events': typeof EventsRoute
   '/gallery': typeof GalleryRoute
   '/live': typeof LiveRoute
-  '/portal-rpgm-2026-x9k': typeof PortalRpgm2026X9kRoute
   '/sermons': typeof SermonsRoute
 }
 export interface FileRouteTypes {
@@ -119,7 +110,6 @@ export interface FileRouteTypes {
     | '/events'
     | '/gallery'
     | '/live'
-    | '/portal-rpgm-2026-x9k'
     | '/sermons'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -131,7 +121,6 @@ export interface FileRouteTypes {
     | '/events'
     | '/gallery'
     | '/live'
-    | '/portal-rpgm-2026-x9k'
     | '/sermons'
   id:
     | '__root__'
@@ -143,7 +132,6 @@ export interface FileRouteTypes {
     | '/events'
     | '/gallery'
     | '/live'
-    | '/portal-rpgm-2026-x9k'
     | '/sermons'
   fileRoutesById: FileRoutesById
 }
@@ -156,7 +144,6 @@ export interface RootRouteChildren {
   EventsRoute: typeof EventsRoute
   GalleryRoute: typeof GalleryRoute
   LiveRoute: typeof LiveRoute
-  PortalRpgm2026X9kRoute: typeof PortalRpgm2026X9kRoute
   SermonsRoute: typeof SermonsRoute
 }
 
@@ -167,13 +154,6 @@ declare module '@tanstack/react-router' {
       path: '/sermons'
       fullPath: '/sermons'
       preLoaderRoute: typeof SermonsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/portal-rpgm-2026-x9k': {
-      id: '/portal-rpgm-2026-x9k'
-      path: '/portal-rpgm-2026-x9k'
-      fullPath: '/portal-rpgm-2026-x9k'
-      preLoaderRoute: typeof PortalRpgm2026X9kRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/live': {
@@ -244,7 +224,6 @@ const rootRouteChildren: RootRouteChildren = {
   EventsRoute: EventsRoute,
   GalleryRoute: GalleryRoute,
   LiveRoute: LiveRoute,
-  PortalRpgm2026X9kRoute: PortalRpgm2026X9kRoute,
   SermonsRoute: SermonsRoute,
 }
 export const routeTree = rootRouteImport
