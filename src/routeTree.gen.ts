@@ -10,11 +10,11 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SermonsRouteImport } from './routes/sermons'
-import { Route as PortalRpgm2026X9kRouteImport } from './routes/portal-rpgm-2026-x9k'
 import { Route as LiveRouteImport } from './routes/live'
 import { Route as GalleryRouteImport } from './routes/gallery'
 import { Route as EventsRouteImport } from './routes/events'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as ChurchAdminSecureRouteImport } from './routes/church-admin-secure'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
@@ -22,11 +22,6 @@ import { Route as IndexRouteImport } from './routes/index'
 const SermonsRoute = SermonsRouteImport.update({
   id: '/sermons',
   path: '/sermons',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PortalRpgm2026X9kRoute = PortalRpgm2026X9kRouteImport.update({
-  id: '/portal-rpgm-2026-x9k',
-  path: '/portal-rpgm-2026-x9k',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LiveRoute = LiveRouteImport.update({
@@ -49,6 +44,11 @@ const ContactRoute = ContactRouteImport.update({
   path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ChurchAdminSecureRoute = ChurchAdminSecureRouteImport.update({
+  id: '/church-admin-secure',
+  path: '/church-admin-secure',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BlogRoute = BlogRouteImport.update({
   id: '/blog',
   path: '/blog',
@@ -69,22 +69,22 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/blog': typeof BlogRoute
+  '/church-admin-secure': typeof ChurchAdminSecureRoute
   '/contact': typeof ContactRoute
   '/events': typeof EventsRoute
   '/gallery': typeof GalleryRoute
   '/live': typeof LiveRoute
-  '/portal-rpgm-2026-x9k': typeof PortalRpgm2026X9kRoute
   '/sermons': typeof SermonsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/blog': typeof BlogRoute
+  '/church-admin-secure': typeof ChurchAdminSecureRoute
   '/contact': typeof ContactRoute
   '/events': typeof EventsRoute
   '/gallery': typeof GalleryRoute
   '/live': typeof LiveRoute
-  '/portal-rpgm-2026-x9k': typeof PortalRpgm2026X9kRoute
   '/sermons': typeof SermonsRoute
 }
 export interface FileRoutesById {
@@ -92,11 +92,11 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/blog': typeof BlogRoute
+  '/church-admin-secure': typeof ChurchAdminSecureRoute
   '/contact': typeof ContactRoute
   '/events': typeof EventsRoute
   '/gallery': typeof GalleryRoute
   '/live': typeof LiveRoute
-  '/portal-rpgm-2026-x9k': typeof PortalRpgm2026X9kRoute
   '/sermons': typeof SermonsRoute
 }
 export interface FileRouteTypes {
@@ -105,33 +105,33 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/blog'
+    | '/church-admin-secure'
     | '/contact'
     | '/events'
     | '/gallery'
     | '/live'
-    | '/portal-rpgm-2026-x9k'
     | '/sermons'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
     | '/blog'
+    | '/church-admin-secure'
     | '/contact'
     | '/events'
     | '/gallery'
     | '/live'
-    | '/portal-rpgm-2026-x9k'
     | '/sermons'
   id:
     | '__root__'
     | '/'
     | '/about'
     | '/blog'
+    | '/church-admin-secure'
     | '/contact'
     | '/events'
     | '/gallery'
     | '/live'
-    | '/portal-rpgm-2026-x9k'
     | '/sermons'
   fileRoutesById: FileRoutesById
 }
@@ -139,11 +139,11 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   BlogRoute: typeof BlogRoute
+  ChurchAdminSecureRoute: typeof ChurchAdminSecureRoute
   ContactRoute: typeof ContactRoute
   EventsRoute: typeof EventsRoute
   GalleryRoute: typeof GalleryRoute
   LiveRoute: typeof LiveRoute
-  PortalRpgm2026X9kRoute: typeof PortalRpgm2026X9kRoute
   SermonsRoute: typeof SermonsRoute
 }
 
@@ -154,13 +154,6 @@ declare module '@tanstack/react-router' {
       path: '/sermons'
       fullPath: '/sermons'
       preLoaderRoute: typeof SermonsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/portal-rpgm-2026-x9k': {
-      id: '/portal-rpgm-2026-x9k'
-      path: '/portal-rpgm-2026-x9k'
-      fullPath: '/portal-rpgm-2026-x9k'
-      preLoaderRoute: typeof PortalRpgm2026X9kRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/live': {
@@ -191,6 +184,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/church-admin-secure': {
+      id: '/church-admin-secure'
+      path: '/church-admin-secure'
+      fullPath: '/church-admin-secure'
+      preLoaderRoute: typeof ChurchAdminSecureRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/blog': {
       id: '/blog'
       path: '/blog'
@@ -219,11 +219,11 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   BlogRoute: BlogRoute,
+  ChurchAdminSecureRoute: ChurchAdminSecureRoute,
   ContactRoute: ContactRoute,
   EventsRoute: EventsRoute,
   GalleryRoute: GalleryRoute,
   LiveRoute: LiveRoute,
-  PortalRpgm2026X9kRoute: PortalRpgm2026X9kRoute,
   SermonsRoute: SermonsRoute,
 }
 export const routeTree = rootRouteImport
