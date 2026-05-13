@@ -14,16 +14,264 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      announcements: {
+        Row: {
+          body: string
+          created_at: string
+          ends_at: string | null
+          id: string
+          is_active: boolean
+          starts_at: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          ends_at?: string | null
+          id?: string
+          is_active?: boolean
+          starts_at?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          ends_at?: string | null
+          id?: string
+          is_active?: boolean
+          starts_at?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      blog_posts: {
+        Row: {
+          author: string | null
+          body: string
+          cover_image: string | null
+          created_at: string
+          excerpt: string | null
+          id: string
+          published: boolean
+          published_at: string
+          slug: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          author?: string | null
+          body: string
+          cover_image?: string | null
+          created_at?: string
+          excerpt?: string | null
+          id?: string
+          published?: boolean
+          published_at?: string
+          slug: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          author?: string | null
+          body?: string
+          cover_image?: string | null
+          created_at?: string
+          excerpt?: string | null
+          id?: string
+          published?: boolean
+          published_at?: string
+          slug?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      gallery_photos: {
+        Row: {
+          caption: string
+          category: string
+          created_at: string
+          description: string | null
+          id: string
+          image_url: string
+          taken_on: string | null
+        }
+        Insert: {
+          caption: string
+          category: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url: string
+          taken_on?: string | null
+        }
+        Update: {
+          caption?: string
+          category?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string
+          taken_on?: string | null
+        }
+        Relationships: []
+      }
+      pastor_profile: {
+        Row: {
+          bio: string | null
+          id: string
+          name: string
+          photo_url: string | null
+          short_message: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          bio?: string | null
+          id?: string
+          name: string
+          photo_url?: string | null
+          short_message?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          bio?: string | null
+          id?: string
+          name?: string
+          photo_url?: string | null
+          short_message?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      prayer_requests: {
+        Row: {
+          created_at: string
+          id: string
+          message: string
+          name: string
+          prayer_type: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message: string
+          name: string
+          prayer_type: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message?: string
+          name?: string
+          prayer_type?: string
+        }
+        Relationships: []
+      }
+      sermons: {
+        Row: {
+          audio_name: string | null
+          audio_url: string | null
+          cover_image: string | null
+          created_at: string
+          description: string | null
+          id: string
+          preached_on: string
+          preacher: string
+          scripture: string | null
+          service_type: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          audio_name?: string | null
+          audio_url?: string | null
+          cover_image?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          preached_on: string
+          preacher: string
+          scripture?: string | null
+          service_type: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          audio_name?: string | null
+          audio_url?: string | null
+          cover_image?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          preached_on?: string
+          preacher?: string
+          scripture?: string | null
+          service_type?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      site_settings: {
+        Row: {
+          id: number
+          live_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          id?: number
+          live_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          id?: number
+          live_url?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +398,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+    },
   },
 } as const
