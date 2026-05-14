@@ -46,8 +46,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:type", content: "website" },
       { name: "twitter:title", content: "Risen Power Gospel Ministry" },
       { name: "twitter:description", content: "Where faith is ignited, lives are transformed, and God's power is revealed. Join Risen Power Gospel Ministry in Delta state, Nigeria." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/2df234ec-523e-4b00-9727-a0a5f62ccf0d/id-preview-1da50eb5--bf97cd89-1b88-432b-aa8d-c3e69d965021.lovable.app-1778668670384.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/2df234ec-523e-4b00-9727-a0a5f62ccf0d/id-preview-1da50eb5--bf97cd89-1b88-432b-aa8d-c3e69d965021.lovable.app-1778668670384.png" },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/ErCmRwJpuXdSBqnIkGtiNA4bpQI2/social-images/social-1778749494098-photo_2026-05-14_09-58-56.webp" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/ErCmRwJpuXdSBqnIkGtiNA4bpQI2/social-images/social-1778749494098-photo_2026-05-14_09-58-56.webp" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
