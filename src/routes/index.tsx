@@ -191,32 +191,6 @@ function Index() {
         </div>
       </section>
 
-      {/* DONATION */}
-      <section className="py-28 bg-white">
-        <div className="mx-auto max-w-6xl px-6">
-          <Reveal>
-            <div className="relative overflow-hidden rounded-3xl bg-navy text-white p-12 md:p-20 text-center">
-              <div className="cross-watermark opacity-[0.06]" />
-              <div className="relative">
-                <span className="section-tag !text-white/70">Sow a Seed</span>
-                <h2 className="font-display text-4xl md:text-6xl mt-4">Partner With the Vision</h2>
-                <p className="mt-6 max-w-2xl mx-auto text-white/75">
-                  Your giving fuels souls, missions, and the move of the Spirit across Rivers State and beyond.
-                </p>
-                <div className="mt-10 flex flex-wrap justify-center gap-3">
-                  {["₦5,000", "₦10,000", "₦25,000", "Custom"].map((a) => (
-                    <button key={a} className="rounded-full border border-white/30 px-6 py-3 text-sm hover:bg-white hover:text-navy transition">{a}</button>
-                  ))}
-                </div>
-                <button className="mt-8 inline-flex items-center gap-2 rounded-full bg-white text-navy px-8 py-4 text-sm font-semibold hover:scale-105 transition">
-                  Give Now <ArrowRight size={16} />
-                </button>
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
       {/* TESTIMONIES */}
       <section className="py-24 bg-surface-alt">
         <div className="mx-auto max-w-7xl px-6">
@@ -225,19 +199,21 @@ function Index() {
             <h2 className="font-display text-4xl md:text-5xl text-navy mt-5">Stories of His Power</h2>
           </div>
           <div className="grid gap-6 md:grid-cols-3">
-            {[
-              { q: "I came in with depression weighing me down. I left lifted, healed, and full of joy. Risen Power changed my life.", a: "Chioma A." },
-              { q: "After years of waiting, my marriage and family were restored after a single prayer night. Glory to Jesus!", a: "Emeka & Joy O." },
-              { q: "I gave my life to Christ here. Every Sunday feels like heaven on earth. This is home.", a: "David U." },
-            ].map((t, i) => (
-              <Reveal key={i} delay={i * 0.1}>
+            {(approved.length ? approved : []).map((t, i) => (
+              <Reveal key={t.id} delay={i * 0.1}>
                 <div className="glass-card p-8 h-full">
                   <Quote size={28} className="text-navy mb-4" />
-                  <p className="text-navy-soft leading-relaxed italic">"{t.q}"</p>
-                  <p className="mt-6 font-semibold text-navy">— {t.a}</p>
+                  <p className="text-navy-soft leading-relaxed italic">"{t.message}"</p>
+                  <p className="mt-6 font-semibold text-navy">— {t.name}</p>
                 </div>
               </Reveal>
             ))}
+            {!approved.length && (
+              <p className="col-span-full text-center text-navy-muted">Be the first to share a testimony. <Link to="/testimonies" className="underline font-medium">Share yours →</Link></p>
+            )}
+          </div>
+          <div className="text-center mt-10">
+            <Link to="/testimonies" className="inline-flex items-center gap-2 rounded-full border border-navy px-6 py-3 text-sm font-medium text-navy hover:bg-navy hover:text-white transition">Read all testimonies <ArrowRight size={14} /></Link>
           </div>
         </div>
       </section>
