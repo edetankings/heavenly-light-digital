@@ -17,7 +17,7 @@ function useTable<T>(table: string, order: { col: string; asc?: boolean } = { co
   useEffect(() => {
     let mounted = true;
     const load = async () => {
-      const { data: rows } = await supabase.from(table as any).select("*").order(order.col, { ascending: !!order.asc });
+      const { data: rows } = await (supabase.from as any)(table).select("*").order(order.col, { ascending: !!order.asc });
       if (mounted) { setData((rows as T[]) || []); setLoading(false); }
     };
     load();
