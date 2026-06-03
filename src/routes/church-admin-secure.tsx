@@ -1,9 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState, FormEvent } from "react";
 import { toast } from "sonner";
-import { Lock, LogOut, Flame, Trash2, Megaphone, BookOpen, Mic, ImageIcon, User, MessageSquare, Radio, Plus, Edit3, X, Save } from "lucide-react";
+import { Lock, LogOut, Flame, Trash2, Megaphone, BookOpen, Mic, ImageIcon, User, MessageSquare, Radio, Plus, Edit3, X, Save, Calendar, Heart, Check } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { useAuthSession, useAnnouncements, useBlogPosts, useSermons, useGalleryPhotos, usePastor, useSiteSettings, usePrayerRequests, uploadToBucket } from "@/lib/supabase-data";
+import { useAuthSession, useAnnouncements, useBlogPosts, useSermons, useGalleryPhotos, usePastor, useSiteSettings, usePrayerRequests, useEvents, useTestimonies, uploadToBucket } from "@/lib/supabase-data";
 
 export const Route = createFileRoute("/church-admin-secure")({
   head: () => ({ meta: [{ title: "Secure Admin" }, { name: "robots", content: "noindex, nofollow" }] }),
@@ -74,12 +74,14 @@ function AuthScreen({ mode: initial }: { mode: "signin" | "signup" }) {
   );
 }
 
-type Tab = "announcements" | "pastor" | "blog" | "sermons" | "gallery" | "prayers" | "live";
+type Tab = "announcements" | "events" | "testimonies" | "pastor" | "blog" | "sermons" | "gallery" | "prayers" | "live";
 
 function Dashboard() {
   const [tab, setTab] = useState<Tab>("announcements");
   const tabs: { k: Tab; l: string; Icon: any }[] = [
     { k: "announcements", l: "Announcements", Icon: Megaphone },
+    { k: "events", l: "Events", Icon: Calendar },
+    { k: "testimonies", l: "Testimonies", Icon: Heart },
     { k: "pastor", l: "Pastor", Icon: User },
     { k: "blog", l: "Blog", Icon: BookOpen },
     { k: "sermons", l: "Sermons", Icon: Mic },
@@ -110,6 +112,8 @@ function Dashboard() {
       </header>
       <main className="mx-auto max-w-7xl px-4 sm:px-6 py-6 sm:py-10">
         {tab === "announcements" && <AnnouncementsTab />}
+        {tab === "events" && <EventsTab />}
+        {tab === "testimonies" && <TestimoniesTab />}
         {tab === "pastor" && <PastorTab />}
         {tab === "blog" && <BlogTab />}
         {tab === "sermons" && <SermonsTab />}
@@ -487,6 +491,7 @@ function PrayersTab() {
           <div key={p.id} className="glass-card p-4 sm:p-5 flex flex-col sm:flex-row gap-3 sm:items-start">
             <div className="flex-1 min-w-0">
               <p className="font-medium text-navy">{p.name} <span className="ml-2 text-[10px] uppercase tracking-wider text-navy-muted">{p.prayer_type}</span></p>
+              {p.email && <p className="text-xs text-navy-muted">✉ <a href={`mailto:${p.email}`} className="underline">{p.email}</a></p>}
               <p className="text-sm text-navy-soft mt-1">{p.message}</p>
               <p className="text-[10px] text-navy-muted mt-2">{new Date(p.created_at).toLocaleString()}</p>
             </div>
