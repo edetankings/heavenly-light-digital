@@ -538,3 +538,137 @@ function Select({ options, ...props }: { options: string[] } & React.SelectHTMLA
     </select>
   );
 }
+
+/* ---------- EVENTS ---------- */
+function EventsTab() {
+  const { data: events } = useEvents();
+  const [open, setOpen] = useState(false);
+  const [editing, setEditing] = useState<any | null>(null);
+  const [cover, setCover] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
+  useEffect(() => { setCover(editing?.cover_image || null); }, [editing]);
+
+  const onCover = async (f: File) => {
+    setUploading(true);
+    try { const url = await uploadToBucket("gallery-images", f); setCover(url); toast.success("Image uploaded"); }
+    catch (e: any) { toast.error(e.message); } finally { setUploading(false); }
+  };
+  const save = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const fd = new FormData(e.currentTarget);
+    const payload: any = {
+      title: String(fd.get("title")), description: String(fd.get("description") || ""),
+      starts_at: new Date(String(fd.get("starts_at"))).toISOString(),
+      location: String(fd.get("location") || ""), cover_image: cover, is_archived: false,
+    };
+    const { error } = editing
+      ? await (supabase.from as any)("events").update(payload).eq("id", editing.id)
+      : await (supabase.from as any)("events").insert(payload);
+    if (error) return toast.error(error.message);
+    toast.success(editing ? "Event updated" : "Event created");
+    setOpen(false); setEditing(null); setCover(null);
+  };
+  const archive = async (id: string) => {
+    const { error } = await (supabase.from as any)("events").update({ is_archived: true }).eq("id", id);
+    if (error) return toast.error(error.message);
+    toast.success("Archived");
+  };
+  const del = async (id: string) => {
+    if (!confirm("Delete this event permanently?")) return;
+    const { error } = await (supabase.from as any)("events").delete().eq("id", id);
+    if (error) return toast.error(error.message);
+    toast.success("Deleted");
+  };
+
+  const upcoming = events.filter((e: any) => !e.is_archived);
+  const archived = events.filter((e: any) => e.is_archived);
+
+  return (
+    <section className="space-y-5">
+      <div className="flex items-center justify-between gap-3">
+        <h2 className="font-display text-2xl sm:text-3xl text-navy">Events</h2>
+        <button onClick={() => { setEditing(null); setCover(null); setOpen(true); }} className="inline-flex items-center gap-2 rounded-md bg-navy text-white px-4 py-2 text-sm"><Plus size={14} /> New</button>
+      </div>
+      {open && (
+        <form onSubmit={save} className="glass-card p-5 sm:p-7 grid gap-3 sm:grid-cols-2">
+          <Input name="title" placeholder="Event title" defaultValue={editing?.title} required />
+          <Input type="datetime-local" name="starts_at" defaultValue={editing?.starts_at?.slice(0,16)} required />
+          <Input name="location" placeholder="Location" defaultValue={editing?.location || ""} />
+          <div>
+            <input type="file" accept="image/*" onChange={(e) => e.target.files?.[0] && onCover(e.target.files[0])} className="text-xs text-navy" />
+            {uploading && <p className="text-xs text-navy-muted">Uploading…</p>}
+            {cover && <img src={cover} alt="" className="mt-2 h-20 rounded-md object-cover" />}
+          </div>
+          <textarea name="description" defaultValue={editing?.description || ""} placeholder="Description" rows={3} className="sm:col-span-2 rounded-md border border-border px-4 py-3 text-sm" />
+          <div className="sm:col-span-2 flex gap-2">
+            <button className="rounded-md bg-navy text-white px-5 py-2.5 text-sm inline-flex items-center gap-2"><Save size={14} /> Save</button>
+            <button type="button" onClick={() => { setOpen(false); setEditing(null); setCover(null); }} className="rounded-md border border-border px-5 py-2.5 text-sm">Cancel</button>
+          </div>
+        </form>
+      )}
+      <div className="grid gap-3">
+        <p className="text-xs uppercase tracking-wider text-navy-muted">Upcoming</p>
+        {upcoming.map((e: any) => (
+          <div key={e.id} className="glass-card p-4 flex items-center gap-3">
+            <div className="flex-1 min-w-0">
+              <p className="font-medium text-navy truncate">{e.title}</p>
+              <p className="text-xs text-navy-muted">{new Date(e.starts_at).toLocaleString()} {e.location ? `· ${e.location}` : ""}</p>
+            </div>
+            <button onClick={() => { setEditing(e); setOpen(true); }} className="grid h-9 w-9 place-items-center rounded-md border border-border text-navy"><Edit3 size={14} /></button>
+            <button onClick={() => archive(e.id)} title="Archive" className="grid h-9 w-9 place-items-center rounded-md border border-border text-navy"><X size={14} /></button>
+            <button onClick={() => del(e.id)} className="grid h-9 w-9 place-items-center rounded-md bg-destructive text-white"><Trash2 size={14} /></button>
+          </div>
+        ))}
+        {!upcoming.length && <p className="text-sm text-navy-muted">No upcoming events.</p>}
+        {archived.length > 0 && <>
+          <p className="text-xs uppercase tracking-wider text-navy-muted mt-4">Archived</p>
+          {archived.map((e: any) => (
+            <div key={e.id} className="glass-card p-4 flex items-center gap-3 opacity-70">
+              <div className="flex-1 min-w-0"><p className="font-medium text-navy truncate">{e.title}</p><p className="text-xs text-navy-muted">{new Date(e.starts_at).toLocaleDateString()}</p></div>
+              <button onClick={() => del(e.id)} className="grid h-9 w-9 place-items-center rounded-md bg-destructive text-white"><Trash2 size={14} /></button>
+            </div>
+          ))}
+        </>}
+      </div>
+    </section>
+  );
+}
+
+/* ---------- TESTIMONIES ---------- */
+function TestimoniesTab() {
+  const { data: items } = useTestimonies();
+  const toggle = async (id: string, val: boolean) => {
+    const { error } = await (supabase.from as any)("testimonies").update({ is_approved: val }).eq("id", id);
+    if (error) return toast.error(error.message);
+    toast.success(val ? "Published" : "Unpublished");
+  };
+  const del = async (id: string) => {
+    if (!confirm("Delete this testimony?")) return;
+    const { error } = await (supabase.from as any)("testimonies").delete().eq("id", id);
+    if (error) return toast.error(error.message);
+    toast.success("Deleted");
+  };
+  return (
+    <section className="space-y-5">
+      <h2 className="font-display text-2xl sm:text-3xl text-navy">Testimonies</h2>
+      <div className="grid gap-3">
+        {items.map((t: any) => (
+          <div key={t.id} className="glass-card p-4 sm:p-5 flex flex-col sm:flex-row gap-3 sm:items-start">
+            <div className="flex-1 min-w-0">
+              <p className="font-medium text-navy">{t.name} {t.is_approved ? <span className="ml-2 text-[10px] uppercase tracking-wider text-green-700">Published</span> : <span className="ml-2 text-[10px] uppercase tracking-wider text-navy-muted">Pending</span>}</p>
+              {t.email && <p className="text-xs text-navy-muted">✉ {t.email}</p>}
+              {t.title && <p className="text-sm text-navy mt-1 font-medium">{t.title}</p>}
+              <p className="text-sm text-navy-soft mt-1">{t.message}</p>
+              <p className="text-[10px] text-navy-muted mt-2">{new Date(t.created_at).toLocaleString()}</p>
+            </div>
+            <div className="flex gap-2 shrink-0">
+              <button onClick={() => toggle(t.id, !t.is_approved)} title={t.is_approved ? "Unpublish" : "Approve"} className="grid h-9 w-9 place-items-center rounded-md border border-border text-navy"><Check size={14} /></button>
+              <button onClick={() => del(t.id)} className="grid h-9 w-9 place-items-center rounded-md bg-destructive text-white"><Trash2 size={14} /></button>
+            </div>
+          </div>
+        ))}
+        {!items.length && <p className="text-sm text-navy-muted">No testimonies yet.</p>}
+      </div>
+    </section>
+  );
+}
