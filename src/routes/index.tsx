@@ -117,20 +117,23 @@ function Index() {
           <div className="grid gap-6 md:grid-cols-3">
             {sermons.slice(0, 3).map((s, i) => (
               <Reveal key={s.id} delay={i * 0.1}>
+                <Link to="/sermons" className="block">
                 <article className="glass-card p-7 h-full flex flex-col">
-                  <button className="grid h-14 w-14 place-items-center rounded-full bg-navy text-white mb-5 hover:scale-110 transition">
+                  <span className="grid h-14 w-14 place-items-center rounded-full bg-navy text-white mb-5 group-hover:scale-110 transition">
                     <Play size={18} className="ml-0.5" />
-                  </button>
+                  </span>
                   <h3 className="font-display text-2xl text-navy">{s.title}</h3>
                   <p className="text-xs uppercase tracking-wider text-navy-muted mt-2">
-                    {s.preacher} · {new Date(s.date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                    {s.preacher} · {new Date(s.preached_on).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
                   </p>
                   <p className="text-sm text-navy-muted mt-3 italic">{s.scripture}</p>
                   <p className="text-sm text-navy-soft mt-4 flex-1">{s.description}</p>
-                  <span className="mt-5 self-start inline-block rounded-full bg-navy text-white text-[10px] uppercase tracking-wider px-3 py-1">{s.type}</span>
+                  <span className="mt-5 self-start inline-block rounded-full bg-navy text-white text-[10px] uppercase tracking-wider px-3 py-1">{s.service_type}</span>
                 </article>
+                </Link>
               </Reveal>
             ))}
+            {!sermons.length && <p className="col-span-full text-center text-sm text-navy-muted">Sermons will appear here soon.</p>}
           </div>
         </div>
       </section>
@@ -148,15 +151,16 @@ function Index() {
           <div className="grid gap-4 md:grid-cols-3">
             {photos.slice(0, 6).map((p, i) => (
               <Reveal key={p.id} delay={i * 0.05}>
-                <div className="group relative aspect-[4/5] overflow-hidden rounded-xl bg-surface">
-                  <img src={p.src} alt={p.caption} className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                <Link to="/gallery" className="group relative aspect-[4/5] block overflow-hidden rounded-xl bg-surface">
+                  <img src={p.image_url} alt={p.caption} loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
                   <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-navy/95 to-transparent p-5 text-white">
-                    <p className="text-[10px] uppercase tracking-wider text-white/70">{p.category} · {p.year}</p>
+                    <p className="text-[10px] uppercase tracking-wider text-white/70">{p.category}</p>
                     <p className="font-display text-xl mt-1">{p.caption}</p>
                   </div>
-                </div>
+                </Link>
               </Reveal>
             ))}
+            {!photos.length && <p className="col-span-full text-center text-sm text-navy-muted">Gallery photos will appear here soon.</p>}
           </div>
         </div>
       </section>
