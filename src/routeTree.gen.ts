@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TestimoniesRouteImport } from './routes/testimonies'
 import { Route as SermonsRouteImport } from './routes/sermons'
 import { Route as LiveRouteImport } from './routes/live'
 import { Route as GalleryRouteImport } from './routes/gallery'
@@ -19,6 +20,11 @@ import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 
+const TestimoniesRoute = TestimoniesRouteImport.update({
+  id: '/testimonies',
+  path: '/testimonies',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SermonsRoute = SermonsRouteImport.update({
   id: '/sermons',
   path: '/sermons',
@@ -75,6 +81,7 @@ export interface FileRoutesByFullPath {
   '/gallery': typeof GalleryRoute
   '/live': typeof LiveRoute
   '/sermons': typeof SermonsRoute
+  '/testimonies': typeof TestimoniesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -86,6 +93,7 @@ export interface FileRoutesByTo {
   '/gallery': typeof GalleryRoute
   '/live': typeof LiveRoute
   '/sermons': typeof SermonsRoute
+  '/testimonies': typeof TestimoniesRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -98,6 +106,7 @@ export interface FileRoutesById {
   '/gallery': typeof GalleryRoute
   '/live': typeof LiveRoute
   '/sermons': typeof SermonsRoute
+  '/testimonies': typeof TestimoniesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -111,6 +120,7 @@ export interface FileRouteTypes {
     | '/gallery'
     | '/live'
     | '/sermons'
+    | '/testimonies'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -122,6 +132,7 @@ export interface FileRouteTypes {
     | '/gallery'
     | '/live'
     | '/sermons'
+    | '/testimonies'
   id:
     | '__root__'
     | '/'
@@ -133,6 +144,7 @@ export interface FileRouteTypes {
     | '/gallery'
     | '/live'
     | '/sermons'
+    | '/testimonies'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -145,10 +157,18 @@ export interface RootRouteChildren {
   GalleryRoute: typeof GalleryRoute
   LiveRoute: typeof LiveRoute
   SermonsRoute: typeof SermonsRoute
+  TestimoniesRoute: typeof TestimoniesRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/testimonies': {
+      id: '/testimonies'
+      path: '/testimonies'
+      fullPath: '/testimonies'
+      preLoaderRoute: typeof TestimoniesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sermons': {
       id: '/sermons'
       path: '/sermons'
@@ -225,6 +245,7 @@ const rootRouteChildren: RootRouteChildren = {
   GalleryRoute: GalleryRoute,
   LiveRoute: LiveRoute,
   SermonsRoute: SermonsRoute,
+  TestimoniesRoute: TestimoniesRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

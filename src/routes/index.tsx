@@ -3,7 +3,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { Play, Clock, MapPin, Phone, ArrowRight, Quote } from "lucide-react";
 import { Reveal, SectionLabel } from "@/components/site/Section";
-import { useStore } from "@/lib/store";
+import { useSermons, useGalleryPhotos, useTestimonies, usePastor } from "@/lib/supabase-data";
 
 export const Route = createFileRoute("/")({
   head: () => ({ meta: [{ title: "Risen Power Gospel Ministry — Where Faith Is Ignited" }] }),
@@ -11,7 +11,11 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  const { sermons, photos } = useStore();
+  const { data: sermons } = useSermons();
+  const { data: photos } = useGalleryPhotos();
+  const { data: testimonies } = useTestimonies();
+  const pastor = usePastor();
+  const approved = testimonies.filter(t => t.is_approved).slice(0, 3);
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], [0, 140]);
@@ -72,7 +76,7 @@ function Index() {
         <div className="mx-auto max-w-7xl px-6 py-10 grid gap-6 md:grid-cols-3 md:divide-x md:divide-white/15">
           {[
             { icon: Clock, t: "Sunday Service", s: "8:00 AM & 10:30 AM" },
-            { icon: MapPin, t: "Visit Us", s: "Port Harcourt, Rivers State" },
+            { icon: MapPin, t: "Visit Us", s: "Delta State, Ebumade, Vita Form" },
             { icon: Phone, t: "Call Anytime", s: "+234 803 000 0000" },
           ].map((c, i) => (
             <div key={i} className="flex items-center gap-4 md:px-8">
@@ -113,20 +117,23 @@ function Index() {
           <div className="grid gap-6 md:grid-cols-3">
             {sermons.slice(0, 3).map((s, i) => (
               <Reveal key={s.id} delay={i * 0.1}>
+                <Link to="/sermons" className="block">
                 <article className="glass-card p-7 h-full flex flex-col">
-                  <button className="grid h-14 w-14 place-items-center rounded-full bg-navy text-white mb-5 hover:scale-110 transition">
+                  <span className="grid h-14 w-14 place-items-center rounded-full bg-navy text-white mb-5 group-hover:scale-110 transition">
                     <Play size={18} className="ml-0.5" />
-                  </button>
+                  </span>
                   <h3 className="font-display text-2xl text-navy">{s.title}</h3>
                   <p className="text-xs uppercase tracking-wider text-navy-muted mt-2">
-                    {s.preacher} · {new Date(s.date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                    {s.preacher} · {new Date(s.preached_on).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
                   </p>
                   <p className="text-sm text-navy-muted mt-3 italic">{s.scripture}</p>
                   <p className="text-sm text-navy-soft mt-4 flex-1">{s.description}</p>
-                  <span className="mt-5 self-start inline-block rounded-full bg-navy text-white text-[10px] uppercase tracking-wider px-3 py-1">{s.type}</span>
+                  <span className="mt-5 self-start inline-block rounded-full bg-navy text-white text-[10px] uppercase tracking-wider px-3 py-1">{s.service_type}</span>
                 </article>
+                </Link>
               </Reveal>
             ))}
+            {!sermons.length && <p className="col-span-full text-center text-sm text-navy-muted">Sermons will appear here soon.</p>}
           </div>
         </div>
       </section>
@@ -144,15 +151,16 @@ function Index() {
           <div className="grid gap-4 md:grid-cols-3">
             {photos.slice(0, 6).map((p, i) => (
               <Reveal key={p.id} delay={i * 0.05}>
-                <div className="group relative aspect-[4/5] overflow-hidden rounded-xl bg-surface">
-                  <img src={p.src} alt={p.caption} className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                <Link to="/gallery" className="group relative aspect-[4/5] block overflow-hidden rounded-xl bg-surface">
+                  <img src={p.image_url} alt={p.caption} loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
                   <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-navy/95 to-transparent p-5 text-white">
-                    <p className="text-[10px] uppercase tracking-wider text-white/70">{p.category} · {p.year}</p>
+                    <p className="text-[10px] uppercase tracking-wider text-white/70">{p.category}</p>
                     <p className="font-display text-xl mt-1">{p.caption}</p>
                   </div>
-                </div>
+                </Link>
               </Reveal>
             ))}
+            {!photos.length && <p className="col-span-full text-center text-sm text-navy-muted">Gallery photos will appear here soon.</p>}
           </div>
         </div>
       </section>
@@ -183,32 +191,6 @@ function Index() {
         </div>
       </section>
 
-      {/* DONATION */}
-      <section className="py-28 bg-white">
-        <div className="mx-auto max-w-6xl px-6">
-          <Reveal>
-            <div className="relative overflow-hidden rounded-3xl bg-navy text-white p-12 md:p-20 text-center">
-              <div className="cross-watermark opacity-[0.06]" />
-              <div className="relative">
-                <span className="section-tag !text-white/70">Sow a Seed</span>
-                <h2 className="font-display text-4xl md:text-6xl mt-4">Partner With the Vision</h2>
-                <p className="mt-6 max-w-2xl mx-auto text-white/75">
-                  Your giving fuels souls, missions, and the move of the Spirit across Rivers State and beyond.
-                </p>
-                <div className="mt-10 flex flex-wrap justify-center gap-3">
-                  {["₦5,000", "₦10,000", "₦25,000", "Custom"].map((a) => (
-                    <button key={a} className="rounded-full border border-white/30 px-6 py-3 text-sm hover:bg-white hover:text-navy transition">{a}</button>
-                  ))}
-                </div>
-                <button className="mt-8 inline-flex items-center gap-2 rounded-full bg-white text-navy px-8 py-4 text-sm font-semibold hover:scale-105 transition">
-                  Give Now <ArrowRight size={16} />
-                </button>
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
       {/* TESTIMONIES */}
       <section className="py-24 bg-surface-alt">
         <div className="mx-auto max-w-7xl px-6">
@@ -217,19 +199,21 @@ function Index() {
             <h2 className="font-display text-4xl md:text-5xl text-navy mt-5">Stories of His Power</h2>
           </div>
           <div className="grid gap-6 md:grid-cols-3">
-            {[
-              { q: "I came in with depression weighing me down. I left lifted, healed, and full of joy. Risen Power changed my life.", a: "Chioma A." },
-              { q: "After years of waiting, my marriage and family were restored after a single prayer night. Glory to Jesus!", a: "Emeka & Joy O." },
-              { q: "I gave my life to Christ here. Every Sunday feels like heaven on earth. This is home.", a: "David U." },
-            ].map((t, i) => (
-              <Reveal key={i} delay={i * 0.1}>
+            {(approved.length ? approved : []).map((t, i) => (
+              <Reveal key={t.id} delay={i * 0.1}>
                 <div className="glass-card p-8 h-full">
                   <Quote size={28} className="text-navy mb-4" />
-                  <p className="text-navy-soft leading-relaxed italic">"{t.q}"</p>
-                  <p className="mt-6 font-semibold text-navy">— {t.a}</p>
+                  <p className="text-navy-soft leading-relaxed italic">"{t.message}"</p>
+                  <p className="mt-6 font-semibold text-navy">— {t.name}</p>
                 </div>
               </Reveal>
             ))}
+            {!approved.length && (
+              <p className="col-span-full text-center text-navy-muted">Be the first to share a testimony. <Link to="/testimonies" className="underline font-medium">Share yours →</Link></p>
+            )}
+          </div>
+          <div className="text-center mt-10">
+            <Link to="/testimonies" className="inline-flex items-center gap-2 rounded-full border border-navy px-6 py-3 text-sm font-medium text-navy hover:bg-navy hover:text-white transition">Read all testimonies <ArrowRight size={14} /></Link>
           </div>
         </div>
       </section>

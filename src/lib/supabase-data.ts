@@ -7,7 +7,9 @@ export type Sermon = { id: string; title: string; preacher: string; preached_on:
 export type GalleryPhoto = { id: string; caption: string; category: string; description: string | null; image_url: string; taken_on: string | null; created_at: string };
 export type PastorProfile = { id: string; name: string; title: string; photo_url: string | null; short_message: string | null; bio: string | null };
 export type SiteSettings = { id: number; live_url: string | null };
-export type PrayerRequest = { id: string; name: string; prayer_type: string; message: string; created_at: string };
+export type PrayerRequest = { id: string; name: string; email: string | null; prayer_type: string; message: string; created_at: string };
+export type ChurchEvent = { id: string; title: string; description: string | null; starts_at: string; location: string | null; cover_image: string | null; is_archived: boolean };
+export type Testimony = { id: string; name: string; email: string | null; title: string | null; message: string; is_approved: boolean; created_at: string };
 
 function useTable<T>(table: string, order: { col: string; asc?: boolean } = { col: "created_at", asc: false }) {
   const [data, setData] = useState<T[]>([]);
@@ -15,7 +17,7 @@ function useTable<T>(table: string, order: { col: string; asc?: boolean } = { co
   useEffect(() => {
     let mounted = true;
     const load = async () => {
-      const { data: rows } = await supabase.from(table as any).select("*").order(order.col, { ascending: !!order.asc });
+      const { data: rows } = await (supabase.from as any)(table).select("*").order(order.col, { ascending: !!order.asc });
       if (mounted) { setData((rows as T[]) || []); setLoading(false); }
     };
     load();
@@ -36,6 +38,8 @@ export const useBlogPosts = () => useTable<BlogPost>("blog_posts", { col: "publi
 export const useSermons = () => useTable<Sermon>("sermons", { col: "preached_on", asc: false });
 export const useGalleryPhotos = () => useTable<GalleryPhoto>("gallery_photos", { col: "created_at", asc: false });
 export const usePrayerRequests = () => useTable<PrayerRequest>("prayer_requests", { col: "created_at", asc: false });
+export const useEvents = () => useTable<ChurchEvent>("events", { col: "starts_at", asc: true });
+export const useTestimonies = () => useTable<Testimony>("testimonies", { col: "created_at", asc: false });
 
 export function usePastor() {
   const [pastor, setPastor] = useState<PastorProfile | null>(null);
