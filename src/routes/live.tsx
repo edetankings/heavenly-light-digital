@@ -3,10 +3,11 @@ import { Camera, Send } from "lucide-react";
 import { useState, FormEvent } from "react";
 import { toast } from "sonner";
 import { PageHeader, Reveal } from "@/components/site/Section";
-import { useStore, actions } from "@/lib/store";
+import { useSiteSettings } from "@/lib/supabase-data";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/live")({
-  head: () => ({ meta: [{ title: "Live Stream — Risen Power Gospel Ministry" }, { name: "description", content: "Watch our services live and submit your prayer requests." }] }),
+  head: () => ({ meta: [{ title: "Live Stream — Risen Power Gospel Ministries" }, { name: "description", content: "Watch our services live and submit your prayer requests." }] }),
   component: Live,
 });
 
@@ -19,14 +20,24 @@ function toEmbed(url: string) {
 }
 
 function Live() {
-  const { liveUrl, prayers } = useStore();
-  const [draftUrl, setDraftUrl] = useState("");
+  const settings = useSiteSettings();
+  const liveUrl = settings?.live_url || "";
+  const [busy, setBusy] = useState(false);
 
-  const onPrayer = (e: FormEvent<HTMLFormElement>) => {
+  const onPrayer = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const fd = new FormData(e.currentTarget);
-    actions.addPrayer({ name: String(fd.get("name")), type: String(fd.get("type")), message: String(fd.get("message")) });
-    e.currentTarget.reset();
+    const form = e.currentTarget;
+    const fd = new FormData(form);
+    setBusy(true);
+    const { error } = await supabase.from("prayer_requests").insert({
+      name: String(fd.get("name")).trim(),
+      email: (String(fd.get("email") || "").trim() || null) as any,
+      prayer_type: String(fd.get("type")),
+      message: String(fd.get("message")).trim(),
+    } as any);
+    setBusy(false);
+    if (error) return toast.error(error.message);
+    form.reset();
     toast.success("Your prayer request has been received. We are agreeing with you.");
   };
 
@@ -39,7 +50,7 @@ function Live() {
             <div className="lg:col-span-3 glass-card overflow-hidden">
               <div className="flex items-center justify-between bg-navy text-white px-5 py-3">
                 <div className="flex items-center gap-2.5"><span className="live-dot" /><span className="text-xs uppercase tracking-[0.2em]">Live Broadcast</span></div>
-                <span className="text-[10px] uppercase tracking-wider text-white/60">Risen Power · PH</span>
+                <span className="text-[10px] uppercase tracking-wider text-white/60">Risen Power · Delta State</span>
               </div>
               <div className="aspect-video bg-navy relative">
                 {liveUrl ? (
@@ -54,10 +65,6 @@ function Live() {
                   </div>
                 )}
               </div>
-              <div className="p-5 flex flex-col sm:flex-row gap-3">
-                <input value={draftUrl} onChange={(e) => setDraftUrl(e.target.value)} placeholder="Paste YouTube or Facebook live URL" className="flex-1 rounded-md border border-border px-4 py-2.5 text-sm text-navy placeholder:text-navy-muted focus:outline-none focus:ring-2 focus:ring-navy" />
-                <button onClick={() => { actions.setLiveUrl(draftUrl); toast.success("Stream is now live."); }} className="rounded-md bg-navy text-white px-5 py-2.5 text-sm font-medium hover:opacity-90">Go Live</button>
-              </div>
             </div>
           </Reveal>
 
@@ -66,28 +73,16 @@ function Live() {
               <h3 className="font-display text-2xl text-navy">Prayer Request</h3>
               <p className="text-sm text-navy-muted mt-1">We agree with you in faith.</p>
               <form onSubmit={onPrayer} className="mt-5 space-y-3">
-                <input name="name" required placeholder="Your name" className="w-full rounded-md border border-border px-4 py-2.5 text-sm text-navy placeholder:text-navy-muted focus:outline-none focus:ring-2 focus:ring-navy" />
-                <select name="type" required defaultValue="" className="w-full rounded-md border border-border px-4 py-2.5 text-sm text-navy bg-white focus:outline-none focus:ring-2 focus:ring-navy">
+                <input name="name" required placeholder="Your name" className="w-full rounded-md border border-border px-4 py-2.5 text-sm" />
+                <input name="email" type="email" placeholder="Email (so we can follow up)" className="w-full rounded-md border border-border px-4 py-2.5 text-sm" />
+                <select name="type" required defaultValue="" className="w-full rounded-md border border-border px-4 py-2.5 text-sm bg-white">
                   <option value="" disabled>Request type</option>
                   {["Healing","Deliverance","Financial Breakthrough","Family","Salvation","Other"].map(t => <option key={t}>{t}</option>)}
                 </select>
-                <textarea name="message" required rows={4} placeholder="Share your request..." className="w-full rounded-md border border-border px-4 py-2.5 text-sm text-navy placeholder:text-navy-muted focus:outline-none focus:ring-2 focus:ring-navy" />
-                <button type="submit" className="w-full inline-flex items-center justify-center gap-2 rounded-md bg-navy text-white py-3 text-sm font-medium hover:opacity-90"><Send size={14} /> Submit Request</button>
+                <textarea name="message" required rows={4} placeholder="Share your request..." className="w-full rounded-md border border-border px-4 py-2.5 text-sm" />
+                <button disabled={busy} type="submit" className="w-full inline-flex items-center justify-center gap-2 rounded-md bg-navy text-white py-3 text-sm font-medium hover:opacity-90 disabled:opacity-50"><Send size={14} /> {busy ? "Sending…" : "Submit Request"}</button>
+                <p className="text-[11px] text-navy-muted text-center">Your request goes directly to our pastoral team.</p>
               </form>
-
-              {prayers.length > 0 && (
-                <div className="mt-7 border-t border-border pt-5 max-h-72 overflow-auto">
-                  <p className="text-[10px] uppercase tracking-[0.2em] text-navy-muted mb-3">Recent Requests</p>
-                  <ul className="space-y-3">
-                    {prayers.slice(0, 8).map(p => (
-                      <li key={p.id} className="text-sm">
-                        <p className="font-semibold text-navy">{p.name} <span className="font-normal text-navy-muted">— {p.type}</span></p>
-                        <p className="text-navy-soft mt-0.5">{p.message}</p>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
             </div>
           </Reveal>
         </div>
