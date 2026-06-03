@@ -3,7 +3,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { Play, Clock, MapPin, Phone, ArrowRight, Quote } from "lucide-react";
 import { Reveal, SectionLabel } from "@/components/site/Section";
-import { useStore } from "@/lib/store";
+import { useSermons, useGalleryPhotos, useTestimonies, usePastor } from "@/lib/supabase-data";
 
 export const Route = createFileRoute("/")({
   head: () => ({ meta: [{ title: "Risen Power Gospel Ministry — Where Faith Is Ignited" }] }),
@@ -11,7 +11,11 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  const { sermons, photos } = useStore();
+  const { data: sermons } = useSermons();
+  const { data: photos } = useGalleryPhotos();
+  const { data: testimonies } = useTestimonies();
+  const pastor = usePastor();
+  const approved = testimonies.filter(t => t.is_approved).slice(0, 3);
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], [0, 140]);
@@ -72,7 +76,7 @@ function Index() {
         <div className="mx-auto max-w-7xl px-6 py-10 grid gap-6 md:grid-cols-3 md:divide-x md:divide-white/15">
           {[
             { icon: Clock, t: "Sunday Service", s: "8:00 AM & 10:30 AM" },
-            { icon: MapPin, t: "Visit Us", s: "Port Harcourt, Rivers State" },
+            { icon: MapPin, t: "Visit Us", s: "Delta State, Ebumade, Vita Form" },
             { icon: Phone, t: "Call Anytime", s: "+234 803 000 0000" },
           ].map((c, i) => (
             <div key={i} className="flex items-center gap-4 md:px-8">
