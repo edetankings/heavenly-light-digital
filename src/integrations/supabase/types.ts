@@ -89,6 +89,42 @@ export type Database = {
         }
         Relationships: []
       }
+      events: {
+        Row: {
+          cover_image: string | null
+          created_at: string
+          description: string | null
+          id: string
+          is_archived: boolean
+          location: string | null
+          starts_at: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          cover_image?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_archived?: boolean
+          location?: string | null
+          starts_at: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          cover_image?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_archived?: boolean
+          location?: string | null
+          starts_at?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       gallery_photos: {
         Row: {
           caption: string
@@ -152,6 +188,7 @@ export type Database = {
       prayer_requests: {
         Row: {
           created_at: string
+          email: string | null
           id: string
           message: string
           name: string
@@ -159,6 +196,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          email?: string | null
           id?: string
           message: string
           name: string
@@ -166,6 +204,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          email?: string | null
           id?: string
           message?: string
           name?: string
@@ -233,6 +272,36 @@ export type Database = {
           id?: number
           live_url?: string | null
           updated_at?: string
+        }
+        Relationships: []
+      }
+      testimonies: {
+        Row: {
+          created_at: string
+          email: string | null
+          id: string
+          is_approved: boolean
+          message: string
+          name: string
+          title: string | null
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          is_approved?: boolean
+          message: string
+          name: string
+          title?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          is_approved?: boolean
+          message?: string
+          name?: string
+          title?: string | null
         }
         Relationships: []
       }
