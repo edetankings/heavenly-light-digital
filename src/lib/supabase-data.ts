@@ -39,7 +39,10 @@ export const useSermons = () => useTable<Sermon>("sermons", { col: "preached_on"
 export const useGalleryPhotos = () => useTable<GalleryPhoto>("gallery_photos", { col: "created_at", asc: false });
 export const usePrayerRequests = () => useTable<PrayerRequest>("prayer_requests", { col: "created_at", asc: false });
 export const useEvents = () => useTable<ChurchEvent>("events", { col: "starts_at", asc: true });
-export const useTestimonies = () => useTable<Testimony>("testimonies", { col: "created_at", asc: false });
+// Public-safe testimonies (no email column, only approved rows). Uses a DB view.
+export const useTestimonies = () => useTable<Testimony>("testimonies_public", { col: "created_at", asc: false });
+// Admin view of testimonies — includes email and pending rows. Requires admin role (RLS).
+export const useTestimoniesAdmin = () => useTable<Testimony>("testimonies", { col: "created_at", asc: false });
 
 export function usePastor() {
   const [pastor, setPastor] = useState<PastorProfile | null>(null);
