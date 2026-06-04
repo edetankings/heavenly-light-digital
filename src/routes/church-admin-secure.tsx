@@ -3,7 +3,7 @@ import { useEffect, useState, FormEvent } from "react";
 import { toast } from "sonner";
 import { Lock, LogOut, Flame, Trash2, Megaphone, BookOpen, Mic, ImageIcon, User, MessageSquare, Radio, Plus, Edit3, X, Save, Calendar, Heart, Check } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { useAuthSession, useAnnouncements, useBlogPosts, useSermons, useGalleryPhotos, usePastor, useSiteSettings, usePrayerRequests, useEvents, useTestimonies, uploadToBucket } from "@/lib/supabase-data";
+import { useAuthSession, useAnnouncements, useBlogPosts, useSermons, useGalleryPhotos, usePastor, useSiteSettings, usePrayerRequests, useEvents, useTestimoniesAdmin, uploadToBucket } from "@/lib/supabase-data";
 
 export const Route = createFileRoute("/church-admin-secure")({
   head: () => ({ meta: [{ title: "Secure Admin" }, { name: "robots", content: "noindex, nofollow" }] }),
@@ -636,7 +636,7 @@ function EventsTab() {
 
 /* ---------- TESTIMONIES ---------- */
 function TestimoniesTab() {
-  const { data: items } = useTestimonies();
+  const { data: items } = useTestimoniesAdmin();
   const toggle = async (id: string, val: boolean) => {
     const { error } = await (supabase.from as any)("testimonies").update({ is_approved: val }).eq("id", id);
     if (error) return toast.error(error.message);
