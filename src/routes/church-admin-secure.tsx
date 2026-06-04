@@ -162,7 +162,13 @@ function Dashboard() {
               <p className="text-[10px] uppercase tracking-[0.2em] text-navy-muted truncate">Risen Power CMS</p>
             </div>
           </Link>
-          <button onClick={() => supabase.auth.signOut()} className="inline-flex items-center gap-2 rounded-md border border-border px-3 sm:px-4 py-2 text-xs sm:text-sm text-navy hover:bg-surface"><LogOut size={14} /><span className="hidden sm:inline">Logout</span></button>
+          <button onClick={async () => {
+            try {
+              const { data: { user } } = await supabase.auth.getUser();
+              if (user) await supabase.from("admin_sessions").delete().eq("user_id", user.id).eq("device_id", getDeviceId());
+            } catch {}
+            await supabase.auth.signOut();
+          }} className="inline-flex items-center gap-2 rounded-md border border-border px-3 sm:px-4 py-2 text-xs sm:text-sm text-navy hover:bg-surface"><LogOut size={14} /><span className="hidden sm:inline">Logout</span></button>
         </div>
         <nav className="mx-auto max-w-7xl px-2 sm:px-4 pb-3 flex gap-1 sm:gap-2 overflow-x-auto">
           {tabs.map(({ k, l, Icon }) => (
