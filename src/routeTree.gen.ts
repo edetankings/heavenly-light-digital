@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TestimoniesRouteImport } from './routes/testimonies'
 import { Route as SermonsRouteImport } from './routes/sermons'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as LiveRouteImport } from './routes/live'
 import { Route as GalleryRouteImport } from './routes/gallery'
 import { Route as EventsRouteImport } from './routes/events'
@@ -28,6 +29,11 @@ const TestimoniesRoute = TestimoniesRouteImport.update({
 const SermonsRoute = SermonsRouteImport.update({
   id: '/sermons',
   path: '/sermons',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LiveRoute = LiveRouteImport.update({
@@ -80,6 +86,7 @@ export interface FileRoutesByFullPath {
   '/events': typeof EventsRoute
   '/gallery': typeof GalleryRoute
   '/live': typeof LiveRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/sermons': typeof SermonsRoute
   '/testimonies': typeof TestimoniesRoute
 }
@@ -92,6 +99,7 @@ export interface FileRoutesByTo {
   '/events': typeof EventsRoute
   '/gallery': typeof GalleryRoute
   '/live': typeof LiveRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/sermons': typeof SermonsRoute
   '/testimonies': typeof TestimoniesRoute
 }
@@ -105,6 +113,7 @@ export interface FileRoutesById {
   '/events': typeof EventsRoute
   '/gallery': typeof GalleryRoute
   '/live': typeof LiveRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/sermons': typeof SermonsRoute
   '/testimonies': typeof TestimoniesRoute
 }
@@ -119,6 +128,7 @@ export interface FileRouteTypes {
     | '/events'
     | '/gallery'
     | '/live'
+    | '/reset-password'
     | '/sermons'
     | '/testimonies'
   fileRoutesByTo: FileRoutesByTo
@@ -131,6 +141,7 @@ export interface FileRouteTypes {
     | '/events'
     | '/gallery'
     | '/live'
+    | '/reset-password'
     | '/sermons'
     | '/testimonies'
   id:
@@ -143,6 +154,7 @@ export interface FileRouteTypes {
     | '/events'
     | '/gallery'
     | '/live'
+    | '/reset-password'
     | '/sermons'
     | '/testimonies'
   fileRoutesById: FileRoutesById
@@ -156,6 +168,7 @@ export interface RootRouteChildren {
   EventsRoute: typeof EventsRoute
   GalleryRoute: typeof GalleryRoute
   LiveRoute: typeof LiveRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   SermonsRoute: typeof SermonsRoute
   TestimoniesRoute: typeof TestimoniesRoute
 }
@@ -174,6 +187,13 @@ declare module '@tanstack/react-router' {
       path: '/sermons'
       fullPath: '/sermons'
       preLoaderRoute: typeof SermonsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/live': {
@@ -244,19 +264,10 @@ const rootRouteChildren: RootRouteChildren = {
   EventsRoute: EventsRoute,
   GalleryRoute: GalleryRoute,
   LiveRoute: LiveRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   SermonsRoute: SermonsRoute,
   TestimoniesRoute: TestimoniesRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
