@@ -328,7 +328,33 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      testimonies_public: {
+        Row: {
+          created_at: string | null
+          id: string | null
+          is_approved: boolean | null
+          message: string | null
+          name: string | null
+          title: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string | null
+          is_approved?: boolean | null
+          message?: string | null
+          name?: string | null
+          title?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string | null
+          is_approved?: boolean | null
+          message?: string | null
+          name?: string | null
+          title?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       has_role: {
