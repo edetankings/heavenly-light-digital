@@ -171,21 +171,19 @@ function Index() {
           <Reveal>
             <div className="md:col-span-2">
               <div className="aspect-[4/5] rounded-2xl bg-gradient-to-br from-navy to-navy-soft relative overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80" alt="Pastor" className="absolute inset-0 h-full w-full object-cover mix-blend-luminosity opacity-90" />
+                <img src={pastor?.photo_url || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80"} alt={pastor?.name || "Pastor"} className="absolute inset-0 h-full w-full object-cover" />
               </div>
             </div>
           </Reveal>
           <div className="md:col-span-3">
             <Reveal>
               <SectionLabel>A Word From Our Pastor</SectionLabel>
-              <h2 className="font-display text-4xl md:text-5xl text-navy">"Come as you are. Leave forever changed."</h2>
-              <p className="mt-6 text-navy-soft leading-relaxed">
-                Beloved, every soul who walks through our doors is precious to God. We are not perfect — we are pursued.
-                Together we lift our eyes to Jesus, the resurrection and the life. Whether you are weary, broken, or
-                full of fire, there is room for you here. The Spirit is ready to meet you.
+              <h2 className="font-display text-4xl md:text-5xl text-navy">"{pastor?.short_message || "Come as you are. Leave forever changed."}"</h2>
+              <p className="mt-6 text-navy-soft leading-relaxed whitespace-pre-line">
+                {pastor?.bio || "Beloved, every soul who walks through our doors is precious to God. We are not perfect — we are pursued. Together we lift our eyes to Jesus, the resurrection and the life."}
               </p>
-              <p className="mt-6 font-display text-2xl text-navy">— Pastor Daniel Okafor</p>
-              <p className="text-sm text-navy-muted">Senior Pastor</p>
+              <p className="mt-6 font-display text-2xl text-navy">— {pastor?.name || "Pastor"}</p>
+              <p className="text-sm text-navy-muted">{pastor?.title || "Senior Pastor"}</p>
             </Reveal>
           </div>
         </div>
