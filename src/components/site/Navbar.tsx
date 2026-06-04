@@ -32,8 +32,12 @@ export function Navbar() {
   return (
     <header className={`sticky top-0 z-50 bg-white transition-all ${scrolled ? "border-b border-border shadow-[0_4px_20px_-12px_rgba(10,15,46,0.18)]" : "border-b border-transparent"}`}>
       <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-3 md:px-8">
-        <Link to="/" className="flex items-center group" aria-label="Risen Power Gospel Ministries">
-          <img src={logo.url} alt="Risen Power Gospel Ministries" className="h-12 w-12 md:h-14 md:w-14 object-contain" />
+        <Link to="/" className="flex items-center gap-3 group" aria-label="Risen Power Gospel Ministry">
+          <img src={logo.url} alt="Risen Power Gospel Ministry" className="h-12 w-12 md:h-14 md:w-14 object-contain" />
+          <span className="font-display text-base sm:text-lg md:text-xl text-navy leading-tight tracking-tight">
+            Risen Power<br className="hidden sm:block" />
+            <span className="italic font-light"> Gospel Ministry</span>
+          </span>
         </Link>
         <nav className="hidden lg:flex items-center gap-6">
           {links.map((l) => (
