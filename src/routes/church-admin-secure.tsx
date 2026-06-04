@@ -5,6 +5,39 @@ import { Lock, LogOut, Flame, Trash2, Megaphone, BookOpen, Mic, ImageIcon, User,
 import { supabase } from "@/integrations/supabase/client";
 import { useAuthSession, useAnnouncements, useBlogPosts, useSermons, useGalleryPhotos, usePastor, useSiteSettings, usePrayerRequests, useEvents, useTestimoniesAdmin, uploadToBucket } from "@/lib/supabase-data";
 
+const ALLOWED_ADMIN_EMAIL = "edetankings@gmail.com";
+const MAX_ADMIN_DEVICES = 5;
+
+function getDeviceId(): string {
+  if (typeof window === "undefined") return "ssr";
+  let id = localStorage.getItem("rpgm_device_id");
+  if (!id) {
+    id = (crypto.randomUUID?.() ?? Math.random().toString(36).slice(2)) + "-" + Date.now().toString(36);
+    localStorage.setItem("rpgm_device_id", id);
+  }
+  return id;
+}
+
+async function registerDeviceSession(userId: string) {
+  const deviceId = getDeviceId();
+  const userAgent = typeof navigator !== "undefined" ? navigator.userAgent.slice(0, 500) : null;
+  // Upsert current device
+  await supabase.from("admin_sessions").upsert(
+    { user_id: userId, device_id: deviceId, user_agent: userAgent, last_seen_at: new Date().toISOString() },
+    { onConflict: "user_id,device_id" }
+  );
+  // Enforce max devices: keep newest MAX, delete the rest
+  const { data: rows } = await supabase
+    .from("admin_sessions")
+    .select("id,device_id,last_seen_at")
+    .eq("user_id", userId)
+    .order("last_seen_at", { ascending: false });
+  if (rows && rows.length > MAX_ADMIN_DEVICES) {
+    const stale = rows.slice(MAX_ADMIN_DEVICES).map(r => (r as any).id);
+    if (stale.length) await supabase.from("admin_sessions").delete().in("id", stale);
+  }
+}
+
 export const Route = createFileRoute("/church-admin-secure")({
   head: () => ({ meta: [{ title: "Secure Admin" }, { name: "robots", content: "noindex, nofollow" }] }),
   component: AdminPage,
@@ -12,6 +45,11 @@ export const Route = createFileRoute("/church-admin-secure")({
 
 function AdminPage() {
   const { session, isAdmin, loading } = useAuthSession();
+  useEffect(() => {
+    if (session?.user?.id && isAdmin) {
+      registerDeviceSession(session.user.id).catch(() => {});
+    }
+  }, [session?.user?.id, isAdmin]);
   if (loading) return <div className="min-h-screen grid place-items-center bg-surface-alt"><p className="text-sm text-navy-muted">Loading…</p></div>;
   if (!session) return <AuthScreen mode="signin" />;
   if (!isAdmin) return (
@@ -27,25 +65,34 @@ function AdminPage() {
 }
 
 function AuthScreen({ mode: initial }: { mode: "signin" | "signup" }) {
-  const [mode, setMode] = useState<"signin" | "signup">(initial);
+  const [mode, setMode] = useState<"signin" | "signup" | "forgot">(initial);
   const [busy, setBusy] = useState(false);
 
   const submit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
-    const email = String(fd.get("email")).trim();
-    const password = String(fd.get("password"));
+    const email = String(fd.get("email") || "").trim().toLowerCase();
+    const password = String(fd.get("password") || "");
     setBusy(true);
     try {
+      if (email && email !== ALLOWED_ADMIN_EMAIL) {
+        throw new Error("This email is not authorized for admin access.");
+      }
       if (mode === "signup") {
         const redirectUrl = `${window.location.origin}/church-admin-secure`;
         const { error } = await supabase.auth.signUp({ email, password, options: { emailRedirectTo: redirectUrl } });
         if (error) throw error;
         toast.success("Account created. Signing you in…");
-      } else {
+      } else if (mode === "signin") {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
         toast.success("Welcome back.");
+      } else {
+        const redirectTo = `${window.location.origin}/reset-password`;
+        const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo });
+        if (error) throw error;
+        toast.success("Password reset email sent. Check your inbox.");
+        setMode("signin");
       }
     } catch (err: any) {
       toast.error(err.message || "Authentication failed");
@@ -62,12 +109,27 @@ function AuthScreen({ mode: initial }: { mode: "signin" | "signup" }) {
         </div>
         <form onSubmit={submit} className="mt-6 space-y-3">
           <input name="email" type="email" required placeholder="Email" className="w-full rounded-md border border-border px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-navy" />
-          <input name="password" type="password" required minLength={8} placeholder="Password (min 8)" className="w-full rounded-md border border-border px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-navy" />
-          <button disabled={busy} type="submit" className="w-full rounded-md bg-navy text-white py-3 text-sm font-medium hover:opacity-90 disabled:opacity-50">{busy ? "Please wait…" : (mode === "signup" ? "Create account" : "Sign in")}</button>
+          {mode !== "forgot" && (
+            <input name="password" type="password" required minLength={8} placeholder="Password (min 8)" className="w-full rounded-md border border-border px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-navy" />
+          )}
+          <button disabled={busy} type="submit" className="w-full rounded-md bg-navy text-white py-3 text-sm font-medium hover:opacity-90 disabled:opacity-50">
+            {busy ? "Please wait…" : mode === "signup" ? "Create account" : mode === "forgot" ? "Send reset email" : "Sign in"}
+          </button>
         </form>
-        <button onClick={() => setMode(m => m === "signin" ? "signup" : "signin")} className="mt-4 w-full text-xs text-navy-muted hover:text-navy">
-          {mode === "signin" ? "First time? Create account" : "Already have an account? Sign in"}
-        </button>
+        <div className="mt-4 flex flex-col gap-2 text-xs text-navy-muted">
+          {mode === "signin" && (
+            <>
+              <button type="button" onClick={() => setMode("forgot")} className="hover:text-navy">Forgot password?</button>
+              <button type="button" onClick={() => setMode("signup")} className="hover:text-navy">First time? Create account</button>
+            </>
+          )}
+          {mode === "signup" && (
+            <button type="button" onClick={() => setMode("signin")} className="hover:text-navy">Already have an account? Sign in</button>
+          )}
+          {mode === "forgot" && (
+            <button type="button" onClick={() => setMode("signin")} className="hover:text-navy">← Back to sign in</button>
+          )}
+        </div>
         <Link to="/" className="block mt-3 text-center text-xs text-navy-muted hover:text-navy">← Back to site</Link>
       </div>
     </div>
