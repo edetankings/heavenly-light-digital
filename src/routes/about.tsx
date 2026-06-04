@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Eye, Target, Book, User, MapPin } from "lucide-react";
+import { MapPin } from "lucide-react";
 import { PageHeader, Reveal, SectionLabel } from "@/components/site/Section";
+import { usePastor } from "@/lib/supabase-data";
 
 export const Route = createFileRoute("/about")({
   head: () => ({ meta: [
@@ -12,9 +13,9 @@ export const Route = createFileRoute("/about")({
 });
 
 const features = [
-  { Icon: Eye, t: "Our Vision", b: "To raise a generation of Spirit-filled believers who carry the resurrection power of Jesus into every sphere of life." },
-  { Icon: Target, t: "Our Mission", b: "To win souls, disciple believers, and demonstrate the kingdom of God through worship, the Word, and signs following." },
-  { Icon: Book, t: "Our Beliefs", b: "We believe in one God, the inspired Word, salvation in Christ alone, the baptism of the Holy Spirit, and the soon return of Jesus." },
+  { img: "https://images.unsplash.com/photo-1490127252417-7c393f993ee4?w=900&q=80", t: "Our Vision", b: "To raise a generation of Spirit-filled believers who carry the resurrection power of Jesus into every sphere of life." },
+  { img: "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?w=900&q=80", t: "Our Mission", b: "To win souls, disciple believers, and demonstrate the kingdom of God through worship, the Word, and signs following." },
+  { img: "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?w=900&q=80", t: "Our Beliefs", b: "We believe in one God, the inspired Word, salvation in Christ alone, the baptism of the Holy Spirit, and the soon return of Jesus." },
 ];
 const services = [
   { d: "Sun · 8:00 AM", t: "First Service" },
@@ -25,6 +26,7 @@ const services = [
 const ministries = ["Youth Ministry","Women's Fellowship","Men's Fellowship","Choir & Worship","Children's Church","Prayer Team"];
 
 function About() {
+  const pastor = usePastor();
   return (
     <div>
       <PageHeader tag="About Us" title="A House of Power & Presence" subtitle="Born in Port Harcourt with a global flame — we are family before we are anything else." />
@@ -46,10 +48,14 @@ function About() {
           <div className="grid gap-6 md:grid-cols-3">
             {features.map((f, i) => (
               <Reveal key={i} delay={i * 0.1}>
-                <div className="glass-card p-8 h-full">
-                  <div className="grid h-12 w-12 place-items-center rounded-full bg-navy text-white mb-5"><f.Icon size={20} /></div>
-                  <h3 className="font-display text-2xl text-navy">{f.t}</h3>
-                  <p className="mt-3 text-navy-soft leading-relaxed">{f.b}</p>
+                <div className="glass-card overflow-hidden h-full flex flex-col">
+                  <div className="aspect-[16/10] overflow-hidden bg-surface">
+                    <img src={f.img} alt={f.t} loading="lazy" className="h-full w-full object-cover transition-transform duration-700 hover:scale-105" />
+                  </div>
+                  <div className="p-7">
+                    <h3 className="font-display text-2xl text-navy">{f.t}</h3>
+                    <p className="mt-3 text-navy-soft leading-relaxed">{f.b}</p>
+                  </div>
                 </div>
               </Reveal>
             ))}
@@ -60,19 +66,21 @@ function About() {
       <section className="py-20 bg-white">
         <div className="mx-auto max-w-6xl px-6 grid gap-10 md:grid-cols-3 items-center">
           <Reveal>
-            <div className="aspect-square rounded-full mx-auto w-64 bg-surface border border-border grid place-items-center">
-              <User size={80} className="text-navy" />
+            <div className="aspect-square rounded-full mx-auto w-64 bg-surface border border-border overflow-hidden">
+              {pastor?.photo_url ? (
+                <img src={pastor.photo_url} alt={pastor.name} className="h-full w-full object-cover" />
+              ) : (
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80" alt="Pastor" className="h-full w-full object-cover" />
+              )}
             </div>
           </Reveal>
           <div className="md:col-span-2">
             <Reveal>
               <SectionLabel>Senior Pastor</SectionLabel>
-              <h2 className="font-display text-4xl text-navy">Pastor Daniel Okafor</h2>
-              <p className="text-sm text-navy-muted mt-1">Founder & Senior Pastor</p>
-              <p className="mt-5 text-navy-soft leading-relaxed">
-                A passionate teacher of the Word and minister of the Spirit, Pastor Daniel has shepherded Risen Power for over a decade,
-                seeing thousands encounter Jesus through bold preaching, prophetic ministry, and a deep love for people.
-                Alongside his wife, he leads with humility, hunger, and holy fire.
+              <h2 className="font-display text-4xl text-navy">{pastor?.name || "Our Senior Pastor"}</h2>
+              <p className="text-sm text-navy-muted mt-1">{pastor?.title || "Founder & Senior Pastor"}</p>
+              <p className="mt-5 text-navy-soft leading-relaxed whitespace-pre-line">
+                {pastor?.bio || "A passionate teacher of the Word and minister of the Spirit, our pastor has shepherded Risen Power for over a decade, seeing thousands encounter Jesus through bold preaching, prophetic ministry, and a deep love for people."}
               </p>
             </Reveal>
           </div>
