@@ -3,8 +3,8 @@ import { supabase } from "@/integrations/supabase/client";
 
 export type Announcement = { id: string; title: string; body: string; is_active: boolean; starts_at: string | null; ends_at: string | null; created_at: string };
 export type BlogPost = { id: string; title: string; slug: string; excerpt: string | null; body: string; cover_image: string | null; author: string | null; published: boolean; published_at: string };
-export type Sermon = { id: string; title: string; preacher: string; preached_on: string; service_type: string; scripture: string | null; description: string | null; audio_url: string | null; audio_name: string | null; cover_image: string | null };
-export type GalleryPhoto = { id: string; caption: string; category: string; description: string | null; image_url: string; taken_on: string | null; created_at: string };
+export type Sermon = { id: string; title: string; preacher: string; preached_on: string; service_type: string; scripture: string | null; description: string | null; audio_url: string | null; audio_name: string | null; cover_image: string | null; allow_download?: boolean };
+export type GalleryPhoto = { id: string; caption: string; category: string; description: string | null; image_url: string; taken_on: string | null; created_at: string; allow_download?: boolean };
 export type PastorProfile = { id: string; name: string; title: string; photo_url: string | null; short_message: string | null; bio: string | null };
 export type SiteSettings = { id: number; live_url: string | null };
 export type PrayerRequest = { id: string; name: string; email: string | null; prayer_type: string; message: string; created_at: string };
