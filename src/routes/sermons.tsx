@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { PageHeader, Reveal } from "@/components/site/Section";
 import { useSermons } from "@/lib/supabase-data";
 import { AudioPlayer } from "@/components/site/AudioPlayer";
+import { ShareMenu } from "@/components/site/ShareMenu";
 
 export const Route = createFileRoute("/sermons")({
   head: () => ({ meta: [{ title: "Sermons — Risen Power Gospel Ministry" }, { name: "description", content: "Browse anointed messages from Risen Power Gospel Ministry." }] }),
@@ -28,7 +29,19 @@ function Sermons() {
                   <p className="text-xs uppercase tracking-wider text-navy-muted mt-1">{s.preacher}</p>
                   {s.scripture && <p className="text-sm italic text-navy-muted mt-2">{s.scripture}</p>}
                   {s.description && <p className="text-sm text-navy-soft mt-3 flex-1">{s.description}</p>}
-                  {s.audio_url && <div className="mt-5"><AudioPlayer src={s.audio_url} title={s.audio_name || s.title} /></div>}
+                  {s.audio_url && (
+                    <div className="mt-5">
+                      <AudioPlayer
+                        src={s.audio_url}
+                        title={s.title}
+                        downloadName={(s.audio_name || `${s.title}.mp3`).replace(/[\\/:*?"<>|]/g, "-")}
+                        allowDownload={s.allow_download !== false}
+                      />
+                    </div>
+                  )}
+                  <div className="mt-4 flex justify-end">
+                    <ShareMenu url={`/sermons#${s.id}`} title={s.title} text={`${s.title} — ${s.preacher}`} />
+                  </div>
                 </article>
               </Reveal>
             ))}
