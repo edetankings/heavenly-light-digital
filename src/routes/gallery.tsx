@@ -2,7 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { PageHeader, Reveal } from "@/components/site/Section";
 import { useGalleryPhotos } from "@/lib/supabase-data";
 import { useState } from "react";
-import { X } from "lucide-react";
+import { X, Download } from "lucide-react";
+import { ShareMenu, downloadFile } from "@/components/site/ShareMenu";
 
 export const Route = createFileRoute("/gallery")({
   head: () => ({ meta: [{ title: "Gallery — Risen Power Gospel Ministry" }, { name: "description", content: "Worship moments and ministry highlights captured in pictures." }] }),
@@ -45,6 +46,14 @@ function Gallery() {
             <figcaption className="mt-4 text-center text-white">
               <p className="text-[10px] uppercase tracking-wider text-white/60">{activePhoto.category}</p>
               <p className="font-display text-xl mt-1">{activePhoto.caption}</p>
+              <div className="mt-4 flex items-center justify-center gap-2 flex-wrap">
+                {activePhoto.allow_download !== false && (
+                  <button onClick={() => downloadFile(activePhoto.image_url, `${activePhoto.caption || "photo"}.jpg`.replace(/[\\/:*?"<>|]/g, "-"))} className="inline-flex items-center gap-1.5 rounded-md bg-white text-navy px-3 py-2 text-xs font-medium hover:bg-white/90">
+                    <Download size={14} /> Download
+                  </button>
+                )}
+                <ShareMenu url={`/gallery#${activePhoto.id}`} title={activePhoto.caption} text={activePhoto.caption} />
+              </div>
             </figcaption>
           </figure>
         </div>
