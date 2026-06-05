@@ -30,7 +30,7 @@ export function Footer() {
         <div>
           <h4 className="text-white text-sm font-semibold uppercase tracking-wider mb-4">Visit</h4>
           <ul className="space-y-3 text-sm text-white/70">
-            <li className="flex gap-2"><MapPin size={16} className="shrink-0 mt-0.5" />Delta State, Ebumade, Vita Form, DSC Roundabout</li>
+            <li className="flex gap-2"><MapPin size={16} className="shrink-0 mt-0.5" />Delta State, Ebumude, Vita Form, DSC Roundabout</li>
             <li className="flex gap-2"><Phone size={16} className="shrink-0 mt-0.5" />+234 803 000 0000</li>
             <li className="flex gap-2"><Mail size={16} className="shrink-0 mt-0.5" />hello@risenpower.ng</li>
           </ul>
