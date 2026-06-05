@@ -5,6 +5,7 @@ import { Send, Quote } from "lucide-react";
 import { PageHeader, Reveal } from "@/components/site/Section";
 import { useTestimonies } from "@/lib/supabase-data";
 import { supabase } from "@/integrations/supabase/client";
+import { ShareMenu } from "@/components/site/ShareMenu";
 
 export const Route = createFileRoute("/testimonies")({
   head: () => ({ meta: [
@@ -58,7 +59,10 @@ function Testimonies() {
                   <Quote size={22} className="text-navy mb-3" />
                   {t.title && <h4 className="font-display text-xl text-navy">{t.title}</h4>}
                   <p className="text-navy-soft leading-relaxed mt-2">{t.message}</p>
-                  <p className="text-xs uppercase tracking-wider text-navy-muted mt-4">— {t.name} · {new Date(t.created_at).toLocaleDateString()}</p>
+                  <div className="mt-4 flex items-center justify-between gap-3 flex-wrap">
+                    <p className="text-xs uppercase tracking-wider text-navy-muted">— {t.name} · {new Date(t.created_at).toLocaleDateString()}</p>
+                    <ShareMenu url={`/testimonies#${t.id}`} title={t.title || "Testimony"} text={`"${t.message.slice(0, 140)}${t.message.length > 140 ? "…" : ""}" — ${t.name}`} />
+                  </div>
                 </article>
               </Reveal>
             ))}

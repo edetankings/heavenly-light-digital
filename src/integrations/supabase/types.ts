@@ -154,6 +154,7 @@ export type Database = {
       }
       gallery_photos: {
         Row: {
+          allow_download: boolean
           caption: string
           category: string
           created_at: string
@@ -163,6 +164,7 @@ export type Database = {
           taken_on: string | null
         }
         Insert: {
+          allow_download?: boolean
           caption: string
           category: string
           created_at?: string
@@ -172,6 +174,7 @@ export type Database = {
           taken_on?: string | null
         }
         Update: {
+          allow_download?: boolean
           caption?: string
           category?: string
           created_at?: string
@@ -241,6 +244,7 @@ export type Database = {
       }
       sermons: {
         Row: {
+          allow_download: boolean
           audio_name: string | null
           audio_url: string | null
           cover_image: string | null
@@ -255,6 +259,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          allow_download?: boolean
           audio_name?: string | null
           audio_url?: string | null
           cover_image?: string | null
@@ -269,6 +274,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          allow_download?: boolean
           audio_name?: string | null
           audio_url?: string | null
           cover_image?: string | null
