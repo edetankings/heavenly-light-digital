@@ -494,6 +494,7 @@ function GalleryTab() {
       caption: String(fd.get("caption")), category: String(fd.get("category")),
       description: String(fd.get("description") || ""), image_url: p.url,
       taken_on: String(fd.get("taken_on") || "") || null,
+      allow_download: fd.get("allow_download") === "on",
     }));
     const { error } = await supabase.from("gallery_photos").insert(rows);
     if (error) return toast.error(error.message);
@@ -529,6 +530,10 @@ function GalleryTab() {
             </div>
           )}
         </div>
+        <label className="sm:col-span-2 inline-flex items-center gap-2 text-sm text-navy">
+          <input type="checkbox" name="allow_download" defaultChecked className="h-4 w-4 accent-navy" />
+          Allow visitors to download these photos
+        </label>
         <button className="sm:col-span-2 rounded-md bg-navy text-white px-5 py-2.5 text-sm inline-flex items-center justify-center gap-2"><Save size={14} /> Save photos</button>
       </form>
       <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4">
