@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { PageHeader, Reveal } from "@/components/site/Section";
 import { Calendar, MapPin } from "lucide-react";
 import { useEvents } from "@/lib/supabase-data";
+import { ShareMenu } from "@/components/site/ShareMenu";
 
 export const Route = createFileRoute("/events")({
   head: () => ({ meta: [{ title: "Events — Risen Power Gospel Ministries" }, { name: "description", content: "Upcoming services, revivals, and special programs." }] }),
@@ -43,6 +44,9 @@ function Events() {
                     <div className="mt-3 flex flex-wrap gap-4 text-xs text-navy-muted">
                       <span className="inline-flex items-center gap-1.5"><Calendar size={12} /> {d.toLocaleString(undefined, { weekday: "short", hour: "numeric", minute: "2-digit" })}</span>
                       {e.location && <span className="inline-flex items-center gap-1.5"><MapPin size={12} /> {e.location}</span>}
+                    </div>
+                    <div className="mt-4 flex justify-start">
+                      <ShareMenu url={`/events#${e.id}`} title={e.title} text={`${e.title} — ${d.toLocaleString()}`} />
                     </div>
                   </div>
                 </article>
