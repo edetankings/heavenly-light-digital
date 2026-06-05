@@ -409,6 +409,7 @@ function SermonsTab() {
       preached_on: String(fd.get("preached_on")), service_type: String(fd.get("service_type")),
       scripture: String(fd.get("scripture") || ""), description: String(fd.get("description") || ""),
       audio_url: audio?.url || null, audio_name: audio?.name || null,
+      allow_download: fd.get("allow_download") === "on",
     };
     const { error } = editing
       ? await supabase.from("sermons").update(payload).eq("id", editing.id)
@@ -443,6 +444,10 @@ function SermonsTab() {
             {uploading && <p className="text-xs text-navy-muted">Uploading…</p>}
             {audio && <p className="text-xs text-navy mt-1">📎 {audio.name}</p>}
           </div>
+          <label className="sm:col-span-2 inline-flex items-center gap-2 text-sm text-navy">
+            <input type="checkbox" name="allow_download" defaultChecked={editing ? editing.allow_download !== false : true} className="h-4 w-4 accent-navy" />
+            Allow visitors to download this audio
+          </label>
           <div className="sm:col-span-2 flex gap-2">
             <button className="rounded-md bg-navy text-white px-5 py-2.5 text-sm inline-flex items-center gap-2"><Save size={14} /> Save</button>
             <button type="button" onClick={() => { setOpen(false); setEditing(null); setAudio(null); }} className="rounded-md border border-border px-5 py-2.5 text-sm">Cancel</button>
