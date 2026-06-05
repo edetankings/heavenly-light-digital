@@ -1,0 +1,2 @@
+ALTER TABLE public.sermons ADD COLUMN IF NOT EXISTS allow_download boolean NOT NULL DEFAULT true;
+ALTER TABLE public.gallery_photos ADD COLUMN IF NOT EXISTS allow_download boolean NOT NULL DEFAULT true;
