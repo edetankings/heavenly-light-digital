@@ -6,7 +6,7 @@ import { usePastor } from "@/lib/supabase-data";
 export const Route = createFileRoute("/about")({
   head: () => ({ meta: [
     { title: "About — Risen Power Gospel Ministry" },
-    { name: "description", content: "Discover our vision, mission, and the heart behind Risen Power Gospel Ministry in Port Harcourt." },
+    { name: "description", content: "Discover our vision, mission, and the heart behind Risen Power Gospel Ministry in Delta State, Nigeria." },
     { property: "og:title", content: "About Risen Power Gospel Ministry" },
   ]}),
   component: About,
@@ -29,7 +29,7 @@ function About() {
   const pastor = usePastor();
   return (
     <div>
-      <PageHeader tag="About Us" title="A House of Power & Presence" subtitle="Born in Port Harcourt with a global flame — we are family before we are anything else." />
+      <PageHeader tag="About Us" title="A House of Power & Presence" subtitle="Rooted in Delta State with a global flame — we are family before we are anything else." />
 
       <section className="py-20 bg-white">
         <div className="mx-auto max-w-4xl px-6 text-center">
@@ -113,11 +113,11 @@ function About() {
               <iframe
                 title="Map"
                 className="absolute inset-0 h-full w-full"
-                src="https://www.google.com/maps?q=Port+Harcourt,+Rivers+State&output=embed"
+                src="https://www.google.com/maps?q=Ebumude+Vita+Form+DSC+Roundabout+Delta+State+Nigeria&output=embed"
                 loading="lazy"
               />
             </div>
-            <p className="mt-4 text-sm text-navy-muted text-center inline-flex gap-2 items-center justify-center w-full"><MapPin size={14} /> Port Harcourt, Rivers State, Nigeria</p>
+            <p className="mt-4 text-sm text-navy-muted text-center inline-flex gap-2 items-center justify-center w-full"><MapPin size={14} /> Delta State, Ebumude, Vita Form, DSC Roundabout, Nigeria</p>
           </Reveal>
         </div>
       </section>
