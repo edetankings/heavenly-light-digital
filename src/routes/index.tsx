@@ -3,6 +3,9 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { Play, Clock, MapPin, Phone, ArrowRight, Quote } from "lucide-react";
 import { Reveal, SectionLabel } from "@/components/site/Section";
+import { MediaCarousel, MediaCarouselCard } from "@/components/site/MediaCarousel";
+import { AudioPlayer } from "@/components/site/AudioPlayer";
+import { ShareMenu } from "@/components/site/ShareMenu";
 import { useSermons, useGalleryPhotos, useTestimonies, usePastor } from "@/lib/supabase-data";
 
 export const Route = createFileRoute("/")({
@@ -15,11 +18,15 @@ function Index() {
   const { data: photos } = useGalleryPhotos();
   const { data: testimonies } = useTestimonies();
   const pastor = usePastor();
-  const approved = testimonies.filter(t => t.is_approved).slice(0, 3);
+  const approved = testimonies.filter(t => t.is_approved);
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], [0, 140]);
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+
+  const latestSermons = sermons.slice(0, 3);
+  const latestPhotos = photos.slice(0, 5);
+  const featuredTestimonies = approved.slice(0, 5);
 
   return (
     <div>
@@ -107,61 +114,84 @@ function Index() {
       {/* LATEST SERMONS */}
       <section className="py-24 bg-surface-alt">
         <div className="mx-auto max-w-7xl px-6">
-          <div className="flex flex-wrap items-end justify-between gap-6 mb-12">
+          <div className="flex flex-wrap items-end justify-between gap-6 mb-10">
             <div>
               <SectionLabel>Recent Word</SectionLabel>
               <h2 className="font-display text-4xl md:text-5xl text-navy">Latest Sermons</h2>
             </div>
-            <Link to="/sermons" className="text-sm font-medium text-navy hover:underline inline-flex items-center gap-1">View archive <ArrowRight size={14} /></Link>
           </div>
-          <div className="grid gap-6 md:grid-cols-3">
-            {sermons.slice(0, 3).map((s, i) => (
-              <Reveal key={s.id} delay={i * 0.1}>
-                <Link to="/sermons" className="block">
-                <article className="glass-card p-7 h-full flex flex-col">
-                  <span className="grid h-14 w-14 place-items-center rounded-full bg-navy text-white mb-5 group-hover:scale-110 transition">
-                    <Play size={18} className="ml-0.5" />
-                  </span>
-                  <h3 className="font-display text-2xl text-navy">{s.title}</h3>
-                  <p className="text-xs uppercase tracking-wider text-navy-muted mt-2">
-                    {s.preacher} · {new Date(s.preached_on).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
-                  </p>
-                  <p className="text-sm text-navy-muted mt-3 italic">{s.scripture}</p>
-                  <p className="text-sm text-navy-soft mt-4 flex-1">{s.description}</p>
-                  <span className="mt-5 self-start inline-block rounded-full bg-navy text-white text-[10px] uppercase tracking-wider px-3 py-1">{s.service_type}</span>
-                </article>
-                </Link>
-              </Reveal>
-            ))}
-            {!sermons.length && <p className="col-span-full text-center text-sm text-navy-muted">Sermons will appear here soon.</p>}
-          </div>
+
+          {latestSermons.length > 0 ? (
+            <MediaCarousel
+              viewAllHref="/sermons"
+              viewAllLabel="View All Sermons"
+              slideSizes={{ base: 100, sm: 50, md: 33.333, lg: 33.333 }}
+            >
+              {latestSermons.map((s) => (
+                <MediaCarouselCard key={s.id}>
+                  <article className="glass-card p-6 sm:p-7 h-full flex flex-col">
+                    <div className="flex items-center justify-between gap-3">
+                      <span className="rounded-full bg-navy text-white text-[10px] uppercase tracking-wider px-3 py-1">{s.service_type}</span>
+                      <span className="text-[10px] uppercase tracking-wider text-navy-muted">{new Date(s.preached_on).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</span>
+                    </div>
+                    <h3 className="font-display text-xl sm:text-2xl text-navy mt-4">{s.title}</h3>
+                    <p className="text-xs uppercase tracking-wider text-navy-muted mt-1">{s.preacher}</p>
+                    {s.scripture && <p className="text-sm italic text-navy-muted mt-2">{s.scripture}</p>}
+                    {s.description && <p className="text-sm text-navy-soft mt-3 flex-1">{s.description}</p>}
+                    {s.audio_url && (
+                      <div className="mt-4">
+                        <AudioPlayer
+                          src={s.audio_url}
+                          title={s.title}
+                          downloadName={(s.audio_name || `${s.title}.mp3`).replace(/[\\/:*?"<>|]/g, "-")}
+                          allowDownload={s.allow_download !== false}
+                        />
+                      </div>
+                    )}
+                    <div className="mt-3 flex justify-end">
+                      <ShareMenu url={`/sermons#${s.id}`} title={s.title} text={`${s.title} — ${s.preacher}`} />
+                    </div>
+                  </article>
+                </MediaCarouselCard>
+              ))}
+            </MediaCarousel>
+          ) : (
+            <p className="text-center text-sm text-navy-muted">Sermons will appear here soon.</p>
+          )}
         </div>
       </section>
 
       {/* GALLERY HIGHLIGHTS */}
       <section className="py-24 bg-white">
         <div className="mx-auto max-w-7xl px-6">
-          <div className="flex flex-wrap items-end justify-between gap-6 mb-12">
+          <div className="flex flex-wrap items-end justify-between gap-6 mb-10">
             <div>
               <SectionLabel>Worship Moments</SectionLabel>
               <h2 className="font-display text-4xl md:text-5xl text-navy">In His Presence</h2>
             </div>
-            <Link to="/gallery" className="text-sm font-medium text-navy hover:underline inline-flex items-center gap-1">Full gallery <ArrowRight size={14} /></Link>
           </div>
-          <div className="grid gap-4 md:grid-cols-3">
-            {photos.slice(0, 6).map((p, i) => (
-              <Reveal key={p.id} delay={i * 0.05}>
-                <Link to="/gallery" className="group relative aspect-[4/5] block overflow-hidden rounded-xl bg-surface">
-                  <img src={p.image_url} alt={p.caption} loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
-                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-navy/95 to-transparent p-5 text-white">
-                    <p className="text-[10px] uppercase tracking-wider text-white/70">{p.category}</p>
-                    <p className="font-display text-xl mt-1">{p.caption}</p>
-                  </div>
-                </Link>
-              </Reveal>
-            ))}
-            {!photos.length && <p className="col-span-full text-center text-sm text-navy-muted">Gallery photos will appear here soon.</p>}
-          </div>
+
+          {latestPhotos.length > 0 ? (
+            <MediaCarousel
+              viewAllHref="/gallery"
+              viewAllLabel="View All Photos"
+              slideSizes={{ base: 85, sm: 50, md: 33.333, lg: 25 }}
+            >
+              {latestPhotos.map((p) => (
+                <MediaCarouselCard key={p.id}>
+                  <Link to="/gallery" className="group relative aspect-[4/5] block overflow-hidden rounded-xl bg-surface">
+                    <img src={p.image_url} alt={p.caption} loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-navy/95 to-transparent p-5 text-white">
+                      <p className="text-[10px] uppercase tracking-wider text-white/70">{p.category}</p>
+                      <p className="font-display text-lg sm:text-xl mt-1">{p.caption}</p>
+                    </div>
+                  </Link>
+                </MediaCarouselCard>
+              ))}
+            </MediaCarousel>
+          ) : (
+            <p className="text-center text-sm text-navy-muted">Gallery photos will appear here soon.</p>
+          )}
         </div>
       </section>
 
@@ -192,27 +222,30 @@ function Index() {
       {/* TESTIMONIES */}
       <section className="py-24 bg-surface-alt">
         <div className="mx-auto max-w-7xl px-6">
-          <div className="text-center mb-14">
+          <div className="text-center mb-10">
             <div className="inline-flex items-center gap-3"><span className="section-divider" /><span className="section-tag">God Is Moving</span><span className="section-divider" /></div>
             <h2 className="font-display text-4xl md:text-5xl text-navy mt-5">Stories of His Power</h2>
           </div>
-          <div className="grid gap-6 md:grid-cols-3">
-            {(approved.length ? approved : []).map((t, i) => (
-              <Reveal key={t.id} delay={i * 0.1}>
-                <div className="glass-card p-8 h-full">
-                  <Quote size={28} className="text-navy mb-4" />
-                  <p className="text-navy-soft leading-relaxed italic">"{t.message}"</p>
-                  <p className="mt-6 font-semibold text-navy">— {t.name}</p>
-                </div>
-              </Reveal>
-            ))}
-            {!approved.length && (
-              <p className="col-span-full text-center text-navy-muted">Be the first to share a testimony. <Link to="/testimonies" className="underline font-medium">Share yours →</Link></p>
-            )}
-          </div>
-          <div className="text-center mt-10">
-            <Link to="/testimonies" className="inline-flex items-center gap-2 rounded-full border border-navy px-6 py-3 text-sm font-medium text-navy hover:bg-navy hover:text-white transition">Read all testimonies <ArrowRight size={14} /></Link>
-          </div>
+
+          {featuredTestimonies.length > 0 ? (
+            <MediaCarousel
+              viewAllHref="/testimonies"
+              viewAllLabel="View All Testimonies"
+              slideSizes={{ base: 100, sm: 50, md: 33.333, lg: 33.333 }}
+            >
+              {featuredTestimonies.map((t) => (
+                <MediaCarouselCard key={t.id}>
+                  <div className="glass-card p-7 sm:p-8 h-full flex flex-col">
+                    <Quote size={28} className="text-navy mb-4" />
+                    <p className="text-navy-soft leading-relaxed italic flex-1">"{t.message}"</p>
+                    <p className="mt-6 font-semibold text-navy">— {t.name}</p>
+                  </div>
+                </MediaCarouselCard>
+              ))}
+            </MediaCarousel>
+          ) : (
+            <p className="text-center text-navy-muted">Be the first to share a testimony. <Link to="/testimonies" className="underline font-medium">Share yours →</Link></p>
+          )}
         </div>
       </section>
     </div>
