@@ -32,9 +32,9 @@ export function AudioPlayer({ src, title, downloadName, allowDownload }: { src: 
   const fmt = (s: number) => { if (!isFinite(s)) return "0:00"; const m = Math.floor(s / 60); const r = Math.floor(s % 60); return `${m}:${r.toString().padStart(2, "0")}`; };
 
   return (
-    <div className="w-full max-w-full overflow-hidden rounded-xl border border-border bg-white/80 backdrop-blur p-3 flex items-center gap-2 sm:gap-3">
+    <div className="w-full max-w-full overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-white to-[var(--surface)] backdrop-blur p-3 flex items-center gap-2 sm:gap-3 shadow-[0_8px_24px_-12px_rgba(10,15,46,0.18)] ring-1 ring-[var(--gold)]/10">
       <audio ref={ref} src={src} preload="metadata" muted={muted} />
-      <button type="button" onClick={toggle} className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-navy text-white hover:opacity-90 transition" aria-label={playing ? "Pause" : "Play"}>
+      <button type="button" onClick={toggle} className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-gradient-to-br from-navy to-[oklch(0.28_0.10_270)] text-white hover:scale-105 active:scale-95 transition shadow-[0_6px_18px_-6px_rgba(10,15,46,0.5),inset_0_1px_0_rgba(255,255,255,0.15)] ring-1 ring-[var(--gold)]/30" aria-label={playing ? "Pause" : "Play"}>
         {playing ? <Pause size={16} /> : <Play size={16} className="ml-0.5" />}
       </button>
       <div className="flex-1 min-w-0">
