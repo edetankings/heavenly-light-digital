@@ -23,6 +23,7 @@ function Index() {
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], [0, 140]);
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+  const heroScale = useTransform(scrollYProgress, [0, 1], [1, 1.15]);
 
   const latestSermons = sermons.slice(0, 3);
   const latestPhotos = photos.slice(0, 5);
@@ -32,7 +33,7 @@ function Index() {
     <div>
       {/* HERO */}
       <section ref={heroRef} className="relative min-h-[100svh] flex items-center bg-navy overflow-hidden">
-        <motion.div style={{ scale: useTransform(scrollYProgress, [0, 1], [1, 1.15]) }} className="absolute inset-0">
+        <motion.div style={{ scale: heroScale }} className="absolute inset-0">
           <video
             autoPlay muted loop playsInline
             className="absolute inset-0 h-full w-full object-cover"
