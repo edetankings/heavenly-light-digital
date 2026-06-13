@@ -6,11 +6,6 @@ import { Reveal } from "./Section";
 
 type SlideSize = { base?: number; sm?: number; md?: number; lg?: number };
 
-function getSlideClass(sizes: SlideSize = {}) {
-  const { base = 100, sm = 50, md = 33.333, lg = 33.333 } = sizes;
-  return `flex-[0_0_${base}%] sm:flex-[0_0_${sm}%] md:flex-[0_0_${md}%] lg:flex-[0_0_${lg}%]`;
-}
-
 type MediaCarouselProps = {
   children: ReactNode[];
   slideSizes?: SlideSize;
@@ -68,14 +63,34 @@ export function MediaCarousel({
     [emblaApi]
   );
 
-  const slideClass = getSlideClass(slideSizes);
+  const { base = 100, sm = 50, md = 33.333, lg = 33.333 } = slideSizes ?? {};
+  const [isSm, setIsSm] = useState(false);
+  const [isMd, setIsMd] = useState(false);
+  const [isLg, setIsLg] = useState(false);
+  useEffect(() => {
+    const mSm = window.matchMedia("(min-width: 640px)");
+    const mMd = window.matchMedia("(min-width: 768px)");
+    const mLg = window.matchMedia("(min-width: 1024px)");
+    const update = () => { setIsSm(mSm.matches); setIsMd(mMd.matches); setIsLg(mLg.matches); };
+    update();
+    mSm.addEventListener("change", update);
+    mMd.addEventListener("change", update);
+    mLg.addEventListener("change", update);
+    return () => {
+      mSm.removeEventListener("change", update);
+      mMd.removeEventListener("change", update);
+      mLg.removeEventListener("change", update);
+    };
+  }, []);
+  const basis = isLg ? lg : isMd ? md : isSm ? sm : base;
+  useEffect(() => { emblaApi?.reInit(); }, [emblaApi, basis]);
 
   return (
     <div className={className}>
       <div className="overflow-hidden" ref={emblaRef}>
         <div className="flex gap-4 sm:gap-5">
           {children.map((child, i) => (
-            <div key={i} className={`${slideClass} min-w-0`}>
+            <div key={i} className="min-w-0 shrink-0 grow-0" style={{ flexBasis: `${basis}%` }}>
               {child}
             </div>
           ))}
