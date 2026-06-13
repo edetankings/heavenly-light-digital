@@ -10,7 +10,7 @@ export const Route = createFileRoute("/contact")({
 });
 
 const info = [
-  { Icon: MapPin, t: "Address", b: "Delta State, Ebumude, Vita Form, DSC Roundabout" },
+  { Icon: MapPin, t: "Address", b: "DSC Expressway, Effurun GRA, Warri 330102, Delta State" },
   { Icon: Phone, t: "Phone", b: "+234 803 000 0000" },
   { Icon: Mail, t: "Email", b: "hello@risenpower.ng" },
 ];

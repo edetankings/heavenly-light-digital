@@ -113,11 +113,11 @@ function About() {
               <iframe
                 title="Map"
                 className="absolute inset-0 h-full w-full"
-                src="https://www.google.com/maps?q=Ebumude+Vita+Form+DSC+Roundabout+Delta+State+Nigeria&output=embed"
+                src="https://www.google.com/maps?q=DSC+Expressway+Effurun+GRA+Warri+330102+Delta+State+Nigeria&output=embed"
                 loading="lazy"
               />
             </div>
-            <p className="mt-4 text-sm text-navy-muted text-center inline-flex gap-2 items-center justify-center w-full"><MapPin size={14} /> Delta State, Ebumude, Vita Form, DSC Roundabout, Nigeria</p>
+            <p className="mt-4 text-sm text-navy-muted text-center inline-flex gap-2 items-center justify-center w-full"><MapPin size={14} /> DSC Expressway, Effurun GRA, Warri 330102, Delta State, Nigeria</p>
           </Reveal>
         </div>
       </section>
