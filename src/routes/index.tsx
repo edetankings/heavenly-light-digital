@@ -83,7 +83,7 @@ function Index() {
         <div className="mx-auto max-w-7xl px-6 py-10 grid gap-6 md:grid-cols-3 md:divide-x md:divide-white/15">
           {[
             { icon: Clock, t: "Sunday Service", s: "8:00 AM & 10:30 AM" },
-            { icon: MapPin, t: "Visit Us", s: "Delta State, Ebumude, Vita Form" },
+            { icon: MapPin, t: "Visit Us", s: "DSC Expressway, Effurun GRA, Warri, Delta State" },
             { icon: Phone, t: "Call Anytime", s: "+234 803 000 0000" },
           ].map((c, i) => (
             <div key={i} className="flex items-center gap-4 md:px-8">
