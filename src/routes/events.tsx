@@ -5,7 +5,16 @@ import { useEvents } from "@/lib/supabase-data";
 import { ShareMenu } from "@/components/site/ShareMenu";
 
 export const Route = createFileRoute("/events")({
-  head: () => ({ meta: [{ title: "Events — Risen Power Gospel Ministries" }, { name: "description", content: "Upcoming services, revivals, and special programs." }] }),
+  head: () => ({
+    meta: [
+      { title: "Events — Risen Power Gospel Ministry" },
+      { name: "description", content: "Upcoming services, revivals, and special programs at Risen Power Gospel Ministry in Warri, Delta State." },
+      { property: "og:title", content: "Events — Risen Power Gospel Ministry" },
+      { property: "og:description", content: "Upcoming services, revivals, and special programs at Risen Power Gospel Ministry." },
+      { property: "og:url", content: "https://risenpower.lovable.app/events" },
+    ],
+    links: [{ rel: "canonical", href: "https://risenpower.lovable.app/events" }],
+  }),
   component: Events,
 });
 
@@ -39,7 +48,7 @@ function Events() {
                   </div>
                   {e.cover_image && <img src={e.cover_image} alt={e.title} className="h-24 w-24 md:h-28 md:w-28 rounded-lg object-cover" />}
                   <div className="flex-1">
-                    <h3 className="font-display text-2xl text-navy">{e.title}</h3>
+                    <h2 className="font-display text-2xl text-navy">{e.title}</h2>
                     {e.description && <p className="text-navy-soft mt-2">{e.description}</p>}
                     <div className="mt-3 flex flex-wrap gap-4 text-xs text-navy-muted">
                       <span className="inline-flex items-center gap-1.5"><Calendar size={12} /> {d.toLocaleString(undefined, { weekday: "short", hour: "numeric", minute: "2-digit" })}</span>
