@@ -8,10 +8,16 @@ import { supabase } from "@/integrations/supabase/client";
 import { ShareMenu } from "@/components/site/ShareMenu";
 
 export const Route = createFileRoute("/testimonies")({
-  head: () => ({ meta: [
-    { title: "Testimonies — Risen Power Gospel Ministries" },
-    { name: "description", content: "Read what God is doing — and share your own testimony." },
-  ]}),
+  head: () => ({
+    meta: [
+      { title: "Testimonies — Risen Power Gospel Ministry" },
+      { name: "description", content: "Read what God is doing at Risen Power Gospel Ministry — and share your own testimony." },
+      { property: "og:title", content: "Testimonies — Risen Power Gospel Ministry" },
+      { property: "og:description", content: "Read what God is doing — and share your own testimony." },
+      { property: "og:url", content: "https://risenpower.lovable.app/testimonies" },
+    ],
+    links: [{ rel: "canonical", href: "https://risenpower.lovable.app/testimonies" }],
+  }),
   component: Testimonies,
 });
 
@@ -43,12 +49,12 @@ function Testimonies() {
         <div className="mx-auto max-w-6xl px-6 grid gap-8 lg:grid-cols-5">
           <Reveal>
             <form onSubmit={onSubmit} className="lg:col-span-2 glass-card p-7 space-y-3 self-start">
-              <h3 className="font-display text-2xl text-navy">Share Your Testimony</h3>
+              <h2 className="font-display text-2xl text-navy">Share Your Testimony</h2>
               <p className="text-sm text-navy-muted">Your story will go to our team for approval before being published.</p>
-              <input name="name" required placeholder="Your name" className="w-full rounded-md border border-border px-4 py-2.5 text-sm" />
-              <input name="email" type="email" placeholder="Email (optional)" className="w-full rounded-md border border-border px-4 py-2.5 text-sm" />
-              <input name="title" placeholder="Title (optional)" className="w-full rounded-md border border-border px-4 py-2.5 text-sm" />
-              <textarea name="message" required rows={5} placeholder="What did God do for you?" className="w-full rounded-md border border-border px-4 py-2.5 text-sm" />
+              <input aria-label="Your name" name="name" required placeholder="Your name" className="w-full rounded-md border border-border px-4 py-2.5 text-sm" />
+              <input aria-label="Email address (optional)" name="email" type="email" placeholder="Email (optional)" className="w-full rounded-md border border-border px-4 py-2.5 text-sm" />
+              <input aria-label="Testimony title (optional)" name="title" placeholder="Title (optional)" className="w-full rounded-md border border-border px-4 py-2.5 text-sm" />
+              <textarea aria-label="Your testimony message" name="message" required rows={5} placeholder="What did God do for you?" className="w-full rounded-md border border-border px-4 py-2.5 text-sm" />
               <button disabled={busy} className="w-full inline-flex items-center justify-center gap-2 rounded-md bg-navy text-white py-3 text-sm font-medium hover:opacity-90 disabled:opacity-50"><Send size={14} /> {busy ? "Sending…" : "Submit Testimony"}</button>
             </form>
           </Reveal>
