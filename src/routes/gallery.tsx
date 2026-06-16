@@ -6,7 +6,16 @@ import { X, Download } from "lucide-react";
 import { ShareMenu, downloadFile } from "@/components/site/ShareMenu";
 
 export const Route = createFileRoute("/gallery")({
-  head: () => ({ meta: [{ title: "Gallery — Risen Power Gospel Ministry" }, { name: "description", content: "Worship moments and ministry highlights captured in pictures." }] }),
+  head: () => ({
+    meta: [
+      { title: "Gallery — Risen Power Gospel Ministry" },
+      { name: "description", content: "Worship moments and ministry highlights from Risen Power Gospel Ministry captured in pictures." },
+      { property: "og:title", content: "Gallery — Risen Power Gospel Ministry" },
+      { property: "og:description", content: "Worship moments and ministry highlights captured in pictures." },
+      { property: "og:url", content: "https://risenpower.lovable.app/gallery" },
+    ],
+    links: [{ rel: "canonical", href: "https://risenpower.lovable.app/gallery" }],
+  }),
   component: Gallery,
 });
 

@@ -1,0 +1,17 @@
+# Risen Power Gospel Ministry
+
+> A Spirit-filled gospel ministry in Delta State, Nigeria — preaching the Word, releasing the Spirit, and seeing lives transformed.
+
+Risen Power Gospel Ministry is a community of worshippers in Warri, Delta State that gathers weekly for worship, teaching, prayer, and outreach. The website provides service times, sermon audio, devotionals, photo galleries, live streaming, and ways to connect with the church.
+
+## Pages
+
+- [Home](/): Welcome, service times, latest sermons, gallery highlights, and testimonies.
+- [About](/about): Vision, mission, beliefs, senior pastor, service schedule, and ministries.
+- [Sermons](/sermons): Archive of sermon messages with audio playback.
+- [Devotionals](/blog): Written devotionals and articles.
+- [Events](/events): Upcoming services, revivals, and special programs.
+- [Gallery](/gallery): Photos from worship services and ministry events.
+- [Live](/live): Live broadcast and prayer-request submission.
+- [Testimonies](/testimonies): Stories of God's goodness; submit your own.
+- [Contact](/contact): Address, phone, email, and contact form.

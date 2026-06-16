@@ -9,7 +9,16 @@ import { ShareMenu } from "@/components/site/ShareMenu";
 import { useSermons, useGalleryPhotos, useTestimonies, usePastor } from "@/lib/supabase-data";
 
 export const Route = createFileRoute("/")({
-  head: () => ({ meta: [{ title: "Risen Power Gospel Ministry — Where Faith Is Ignited" }] }),
+  head: () => ({
+    meta: [
+      { title: "Risen Power Gospel Ministry — A House of Power & Presence" },
+      { name: "description", content: "Risen Power Gospel Ministry in Warri, Delta State — where faith is ignited, lives are transformed, and God's power is revealed. Join us for worship, sermons, and prayer." },
+      { property: "og:title", content: "Risen Power Gospel Ministry — A House of Power & Presence" },
+      { property: "og:description", content: "Risen Power Gospel Ministry in Warri, Delta State — where faith is ignited, lives are transformed, and God's power is revealed." },
+      { property: "og:url", content: "https://risenpower.lovable.app/" },
+    ],
+    links: [{ rel: "canonical", href: "https://risenpower.lovable.app/" }],
+  }),
   component: Index,
 });
 
@@ -56,6 +65,7 @@ function Index() {
             <h1 className="font-display text-[14vw] leading-[0.95] md:text-[8.5vw] lg:text-[120px] text-white mt-8 tracking-tight drop-shadow-[0_8px_30px_rgba(0,0,0,0.4)]">
               Risen Power<br />
               <span className="italic font-light bg-gradient-to-r from-gold-soft via-gold to-gold-soft bg-clip-text text-transparent">Gospel Ministry</span>
+              <span className="sr-only"> — A House of Power & Presence in Warri, Delta State</span>
             </h1>
           </Reveal>
           <Reveal delay={0.3}>
@@ -209,7 +219,7 @@ function Index() {
           <Reveal>
             <div className="md:col-span-2">
               <div className="aspect-[4/5] rounded-2xl bg-gradient-to-br from-navy to-navy-soft relative overflow-hidden">
-                <img src={pastor?.photo_url || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80"} alt={pastor?.name || "Pastor"} className="absolute inset-0 h-full w-full object-cover" />
+                <img src={pastor?.photo_url || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80"} alt={pastor?.name ? `${pastor.name}, ${pastor.title || "Senior Pastor"}` : "Senior Pastor of Risen Power Gospel Ministry"} className="absolute inset-0 h-full w-full object-cover" />
               </div>
             </div>
           </Reveal>
