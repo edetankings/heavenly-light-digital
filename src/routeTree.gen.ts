@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TestimoniesRouteImport } from './routes/testimonies'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SermonsRouteImport } from './routes/sermons'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as LiveRouteImport } from './routes/live'
@@ -24,6 +25,11 @@ import { Route as IndexRouteImport } from './routes/index'
 const TestimoniesRoute = TestimoniesRouteImport.update({
   id: '/testimonies',
   path: '/testimonies',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SermonsRoute = SermonsRouteImport.update({
@@ -88,6 +94,7 @@ export interface FileRoutesByFullPath {
   '/live': typeof LiveRoute
   '/reset-password': typeof ResetPasswordRoute
   '/sermons': typeof SermonsRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/testimonies': typeof TestimoniesRoute
 }
 export interface FileRoutesByTo {
@@ -101,6 +108,7 @@ export interface FileRoutesByTo {
   '/live': typeof LiveRoute
   '/reset-password': typeof ResetPasswordRoute
   '/sermons': typeof SermonsRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/testimonies': typeof TestimoniesRoute
 }
 export interface FileRoutesById {
@@ -115,6 +123,7 @@ export interface FileRoutesById {
   '/live': typeof LiveRoute
   '/reset-password': typeof ResetPasswordRoute
   '/sermons': typeof SermonsRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/testimonies': typeof TestimoniesRoute
 }
 export interface FileRouteTypes {
@@ -130,6 +139,7 @@ export interface FileRouteTypes {
     | '/live'
     | '/reset-password'
     | '/sermons'
+    | '/sitemap.xml'
     | '/testimonies'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -143,6 +153,7 @@ export interface FileRouteTypes {
     | '/live'
     | '/reset-password'
     | '/sermons'
+    | '/sitemap.xml'
     | '/testimonies'
   id:
     | '__root__'
@@ -156,6 +167,7 @@ export interface FileRouteTypes {
     | '/live'
     | '/reset-password'
     | '/sermons'
+    | '/sitemap.xml'
     | '/testimonies'
   fileRoutesById: FileRoutesById
 }
@@ -170,6 +182,7 @@ export interface RootRouteChildren {
   LiveRoute: typeof LiveRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   SermonsRoute: typeof SermonsRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TestimoniesRoute: typeof TestimoniesRoute
 }
 
@@ -180,6 +193,13 @@ declare module '@tanstack/react-router' {
       path: '/testimonies'
       fullPath: '/testimonies'
       preLoaderRoute: typeof TestimoniesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sermons': {
@@ -266,6 +286,7 @@ const rootRouteChildren: RootRouteChildren = {
   LiveRoute: LiveRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   SermonsRoute: SermonsRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   TestimoniesRoute: TestimoniesRoute,
 }
 export const routeTree = rootRouteImport

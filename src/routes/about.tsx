@@ -4,11 +4,16 @@ import { PageHeader, Reveal, SectionLabel } from "@/components/site/Section";
 import { usePastor } from "@/lib/supabase-data";
 
 export const Route = createFileRoute("/about")({
-  head: () => ({ meta: [
-    { title: "About — Risen Power Gospel Ministry" },
-    { name: "description", content: "Discover our vision, mission, and the heart behind Risen Power Gospel Ministry in Delta State, Nigeria." },
-    { property: "og:title", content: "About Risen Power Gospel Ministry" },
-  ]}),
+  head: () => ({
+    meta: [
+      { title: "About — Risen Power Gospel Ministry" },
+      { name: "description", content: "Discover our vision, mission, and the heart behind Risen Power Gospel Ministry in Warri, Delta State, Nigeria." },
+      { property: "og:title", content: "About Risen Power Gospel Ministry" },
+      { property: "og:description", content: "Our vision, mission, beliefs, senior pastor, service times, and ministries at Risen Power in Warri, Delta State." },
+      { property: "og:url", content: "https://risenpower.lovable.app/about" },
+    ],
+    links: [{ rel: "canonical", href: "https://risenpower.lovable.app/about" }],
+  }),
   component: About,
 });
 
@@ -70,7 +75,7 @@ function About() {
               {pastor?.photo_url ? (
                 <img src={pastor.photo_url} alt={pastor.name} className="h-full w-full object-cover" />
               ) : (
-                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80" alt="Pastor" className="h-full w-full object-cover" />
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80" alt="Senior Pastor of Risen Power Gospel Ministry" className="h-full w-full object-cover" />
               )}
             </div>
           </Reveal>

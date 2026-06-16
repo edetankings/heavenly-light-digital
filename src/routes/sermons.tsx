@@ -5,7 +5,16 @@ import { AudioPlayer } from "@/components/site/AudioPlayer";
 import { ShareMenu } from "@/components/site/ShareMenu";
 
 export const Route = createFileRoute("/sermons")({
-  head: () => ({ meta: [{ title: "Sermons — Risen Power Gospel Ministry" }, { name: "description", content: "Browse anointed messages from Risen Power Gospel Ministry." }] }),
+  head: () => ({
+    meta: [
+      { title: "Sermons — Risen Power Gospel Ministry" },
+      { name: "description", content: "Browse and listen to anointed sermon messages from Risen Power Gospel Ministry." },
+      { property: "og:title", content: "Sermons — Risen Power Gospel Ministry" },
+      { property: "og:description", content: "Browse and listen to anointed sermon messages from Risen Power Gospel Ministry." },
+      { property: "og:url", content: "https://risenpower.lovable.app/sermons" },
+    ],
+    links: [{ rel: "canonical", href: "https://risenpower.lovable.app/sermons" }],
+  }),
   component: Sermons,
 });
 
@@ -25,7 +34,7 @@ function Sermons() {
                     <span className="rounded-full bg-navy text-white text-[10px] uppercase tracking-wider px-3 py-1">{s.service_type}</span>
                     <span className="text-[10px] uppercase tracking-wider text-navy-muted">{new Date(s.preached_on).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</span>
                   </div>
-                  <h3 className="font-display text-xl sm:text-2xl text-navy mt-4">{s.title}</h3>
+                  <h2 className="font-display text-xl sm:text-2xl text-navy mt-4">{s.title}</h2>
                   <p className="text-xs uppercase tracking-wider text-navy-muted mt-1">{s.preacher}</p>
                   {s.scripture && <p className="text-sm italic text-navy-muted mt-2">{s.scripture}</p>}
                   {s.description && <p className="text-sm text-navy-soft mt-3 flex-1">{s.description}</p>}
