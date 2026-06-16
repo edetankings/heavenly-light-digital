@@ -3,7 +3,16 @@ import { PageHeader, Reveal, SectionLabel } from "@/components/site/Section";
 import { useBlogPosts } from "@/lib/supabase-data";
 
 export const Route = createFileRoute("/blog")({
-  head: () => ({ meta: [{ title: "Devotionals — Risen Power" }, { name: "description", content: "Daily devotionals from Risen Power Gospel Ministry." }] }),
+  head: () => ({
+    meta: [
+      { title: "Devotionals — Risen Power Gospel Ministry" },
+      { name: "description", content: "Daily devotionals and articles from Risen Power Gospel Ministry." },
+      { property: "og:title", content: "Devotionals — Risen Power Gospel Ministry" },
+      { property: "og:description", content: "Daily devotionals and articles from Risen Power Gospel Ministry." },
+      { property: "og:url", content: "https://risenpower.lovable.app/blog" },
+    ],
+    links: [{ rel: "canonical", href: "https://risenpower.lovable.app/blog" }],
+  }),
   component: Blog,
 });
 
