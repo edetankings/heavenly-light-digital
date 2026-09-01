@@ -501,12 +501,22 @@ function GalleryTab() {
     toast.success(`Uploaded ${rows.length} photo(s)`);
     setPending([]); e.currentTarget.reset();
   };
-  const del = async (id: string) => {
+  const del = async (id: string, imageUrl?: string) => {
     if (!confirm("Delete this photo?")) return;
     const { error } = await supabase.from("gallery_photos").delete().eq("id", id);
     if (error) return toast.error(error.message);
+    // best-effort remove the stored file too
+    try {
+      const marker = "/gallery-images/";
+      const idx = imageUrl?.indexOf(marker) ?? -1;
+      if (imageUrl && idx > -1) {
+        const path = decodeURIComponent(imageUrl.slice(idx + marker.length).split("?")[0]);
+        await supabase.storage.from("gallery-images").remove([path]);
+      }
+    } catch { /* ignore storage cleanup failure */ }
     toast.success("Deleted");
   };
+
 
   return (
     <section className="space-y-5">
