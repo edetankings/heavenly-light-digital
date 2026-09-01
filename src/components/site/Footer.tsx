@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Facebook, Instagram, Youtube, Twitter, MapPin, Phone, Mail, Clock } from "lucide-react";
+import { Facebook, Instagram, Youtube, Twitter, MapPin, Phone, Clock } from "lucide-react";
 import logo from "@/assets/church-logo.jpg.asset.json";
 
 export function Footer() {
@@ -32,17 +32,17 @@ export function Footer() {
         <div>
           <h4 className="text-[var(--gold)] text-[11px] font-semibold uppercase tracking-[0.25em] mb-5">Visit</h4>
           <ul className="space-y-3 text-sm text-white/70">
-            <li className="flex gap-2"><MapPin size={16} className="shrink-0 mt-0.5 text-[var(--gold)]" />DSC Expressway, Effurun GRA, Warri 330102, Delta State</li>
-            <li className="flex gap-2"><Phone size={16} className="shrink-0 mt-0.5 text-[var(--gold)]" />+234 803 000 0000</li>
-            <li className="flex gap-2"><Mail size={16} className="shrink-0 mt-0.5 text-[var(--gold)]" />hello@risenpower.ng</li>
+            <li className="flex gap-2"><MapPin size={16} className="shrink-0 mt-0.5 text-[var(--gold)]" /><a href="https://maps.app.goo.gl/PtuwLzYDwzKFwocJ9?g_st=ac" target="_blank" rel="noreferrer" className="hover:text-[var(--gold)] transition">VITAFOAM Comfort Center, DSC Expressway, Effurun GRA, Warri 330102, Delta State, Nigeria</a></li>
+            <li className="flex gap-2"><Phone size={16} className="shrink-0 mt-0.5 text-[var(--gold)]" /><a href="tel:09072523125" className="hover:text-[var(--gold)] transition">09072523125</a></li>
           </ul>
         </div>
         <div>
           <h4 className="text-[var(--gold)] text-[11px] font-semibold uppercase tracking-[0.25em] mb-5">Service Times</h4>
           <ul className="space-y-3 text-sm text-white/70">
-            <li className="flex gap-2"><Clock size={16} className="shrink-0 mt-0.5 text-[var(--gold)]" /><span><span className="block text-white">Sunday</span>8:00 AM &amp; 10:30 AM</span></li>
-            <li className="flex gap-2"><Clock size={16} className="shrink-0 mt-0.5 text-[var(--gold)]" /><span><span className="block text-white">Wednesday</span>6:00 PM Bible Study</span></li>
-            <li className="flex gap-2"><Clock size={16} className="shrink-0 mt-0.5 text-[var(--gold)]" /><span><span className="block text-white">Friday</span>6:00 PM Prayer</span></li>
+            <li className="flex gap-2"><Clock size={16} className="shrink-0 mt-0.5 text-[var(--gold)]" /><span><span className="block text-white">Sunday</span>8:00 AM Divine Service</span></li>
+            <li className="flex gap-2"><Clock size={16} className="shrink-0 mt-0.5 text-[var(--gold)]" /><span><span className="block text-white">Wednesday</span>5:00 PM Bible Study</span></li>
+            <li className="flex gap-2"><Clock size={16} className="shrink-0 mt-0.5 text-[var(--gold)]" /><span><span className="block text-white">Friday</span>5:00 PM Revival Service</span></li>
+            <li className="flex gap-2"><Clock size={16} className="shrink-0 mt-0.5 text-[var(--gold)]" /><span><span className="block text-white">1st &amp; 3rd Saturday</span>8:00 AM Morning Prayer</span></li>
           </ul>
         </div>
       </div>
