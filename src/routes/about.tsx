@@ -23,10 +23,10 @@ const features = [
   { img: "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?w=900&q=80", t: "Our Beliefs", b: "We believe in one God, the inspired Word, salvation in Christ alone, the baptism of the Holy Spirit, and the soon return of Jesus." },
 ];
 const services = [
-  { d: "Sun · 8:00 AM", t: "First Service" },
-  { d: "Sun · 10:30 AM", t: "Second Service" },
+  { d: "Sunday · 8:00 AM", t: "Divine Service" },
   { d: "Wed · 5:00 PM", t: "Bible Study" },
-  { d: "Fri · 6:00 PM", t: "Prayer & Vigil" },
+  { d: "Friday · 5:00 PM", t: "Revival Service" },
+  { d: "1st & 3rd Saturday · 8:00 AM", t: "Morning Prayer" },
 ];
 const ministries = ["Youth Ministry","Women's Fellowship","Men's Fellowship","Choir & Worship","Children's Church","Prayer Team"];
 
@@ -41,7 +41,7 @@ function About() {
           <Reveal>
             <p className="text-lg text-navy-soft leading-relaxed">
               Risen Power Gospel Ministry is a community of worshippers contending for the manifest presence of God in our generation.
-              Established in the heart of Rivers State, we are committed to the uncompromised gospel of Jesus Christ — preaching the Word,
+              Established in the heart of Delta State, we are committed to the uncompromised gospel of Jesus Christ — preaching the Word,
               releasing the Spirit, and watching lives transformed week after week.
             </p>
           </Reveal>
@@ -118,11 +118,11 @@ function About() {
               <iframe
                 title="Map"
                 className="absolute inset-0 h-full w-full"
-                src="https://www.google.com/maps?q=DSC+Expressway+Effurun+GRA+Warri+330102+Delta+State+Nigeria&output=embed"
+                src="https://www.google.com/maps?q=VITAFOAM+COMFORT+CENTER+DSC+Expressway+Effurun+GRA+Warri+330102+Delta&output=embed"
                 loading="lazy"
               />
             </div>
-            <p className="mt-4 text-sm text-navy-muted text-center inline-flex gap-2 items-center justify-center w-full"><MapPin size={14} /> DSC Expressway, Effurun GRA, Warri 330102, Delta State, Nigeria</p>
+            <a href="https://maps.app.goo.gl/PtuwLzYDwzKFwocJ9?g_st=ac" target="_blank" rel="noreferrer" className="mt-4 text-sm text-navy-muted text-center inline-flex gap-2 items-center justify-center w-full hover:text-navy"><MapPin size={14} /> VITAFOAM Comfort Center, DSC Expressway, Effurun GRA, Warri 330102, Delta State, Nigeria</a>
           </Reveal>
         </div>
       </section>
