@@ -554,7 +554,7 @@ function GalleryTab() {
               <p className="text-[10px] uppercase tracking-wider text-white/70 truncate">{p.category}</p>
               <p className="text-sm truncate">{p.caption}</p>
             </div>
-            <button onClick={() => del(p.id)} className="absolute top-2 right-2 grid h-8 w-8 place-items-center rounded-full bg-destructive text-white opacity-0 group-hover:opacity-100 transition"><Trash2 size={12} /></button>
+            <button type="button" onClick={() => del(p.id, p.image_url)} aria-label={`Delete photo ${p.caption}`} className="absolute top-2 right-2 z-10 grid h-9 w-9 place-items-center rounded-full bg-destructive text-white shadow-md hover:scale-105 transition"><Trash2 size={14} /></button>
           </div>
         ))}
       </div>
