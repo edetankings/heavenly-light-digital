@@ -95,9 +95,9 @@ function Index() {
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold/60 to-transparent" />
         <div className="mx-auto max-w-7xl px-6 py-10 grid gap-6 md:grid-cols-3 md:divide-x md:divide-white/15">
           {[
-            { icon: Clock, t: "Sunday Service", s: "8:00 AM & 10:30 AM" },
-            { icon: MapPin, t: "Visit Us", s: "DSC Expressway, Effurun GRA, Warri, Delta State" },
-            { icon: Phone, t: "Call Anytime", s: "+234 803 000 0000" },
+            { icon: Clock, t: "Sunday Divine Service", s: "8:00 AM" },
+            { icon: MapPin, t: "Visit Us", s: "VITAFOAM Comfort Center, DSC Expressway, Effurun GRA, Warri" },
+            { icon: Phone, t: "Call Anytime", s: "09072523125" },
           ].map((c, i) => (
             <div key={i} className="flex items-center gap-4 md:px-8">
               <div className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-gold/40 text-gold">
