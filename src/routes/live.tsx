@@ -69,7 +69,7 @@ function Live() {
                     <div>
                       <Camera size={42} className="mx-auto mb-3" />
                       <p className="font-display text-2xl">Stream begins when service starts</p>
-                      <p className="text-xs uppercase tracking-[0.2em] text-white/60 mt-2">Sun 8:00 AM · 10:30 AM</p>
+                      <p className="text-xs uppercase tracking-[0.2em] text-white/60 mt-2">Sunday · 8:00 AM Divine Service</p>
                     </div>
                   </div>
                 )}
