@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack.react-router";
 import { MapPin } from "lucide-react";
 import { PageHeader, Reveal, SectionLabel } from "@/components/site/Section";
 import { usePastor } from "@/lib/supabase-data";
@@ -10,9 +10,9 @@ export const Route = createFileRoute("/about")({
       { name: "description", content: "Discover our vision, mission, and the heart behind Risen Power Gospel Ministry in Warri, Delta State, Nigeria." },
       { property: "og:title", content: "About Risen Power Gospel Ministry" },
       { property: "og:description", content: "Our vision, mission, beliefs, senior pastor, service times, and ministries at Risen Power in Warri, Delta State." },
-      { property: "og:url", content: "https://risenpower.lovable.app/about" },
+      { property: "og:url", content: `${import.meta.env.VITE_BASE_URL ?? "http://localhost:5173"}/about` },
     ],
-    links: [{ rel: "canonical", href: "https://risenpower.lovable.app/about" }],
+    links: [{ rel: "canonical", href: `${import.meta.env.VITE_BASE_URL ?? "http://localhost:5173"}/about` }],
   }),
   component: About,
 });
@@ -47,103 +47,3 @@ function About() {
           </Reveal>
         </div>
       </section>
-
-      <section className="py-20 bg-surface-alt">
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="grid gap-6 md:grid-cols-3">
-            {features.map((f, i) => (
-              <Reveal key={i} delay={i * 0.1}>
-                <div className="glass-card overflow-hidden h-full flex flex-col">
-                  <div className="aspect-[16/10] overflow-hidden bg-surface">
-                    <img src={f.img} alt={f.t} loading="lazy" className="h-full w-full object-cover transition-transform duration-700 hover:scale-105" />
-                  </div>
-                  <div className="p-7">
-                    <h3 className="font-display text-2xl text-navy">{f.t}</h3>
-                    <p className="mt-3 text-navy-soft leading-relaxed">{f.b}</p>
-                  </div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="py-20 bg-white">
-        <div className="mx-auto max-w-6xl px-6 grid gap-10 md:grid-cols-3 items-center">
-          <Reveal>
-            <div className="aspect-square rounded-full mx-auto w-64 bg-surface border border-border overflow-hidden">
-              {pastor?.photo_url ? (
-                <img src={pastor.photo_url} alt={pastor.name} className="h-full w-full object-cover" />
-              ) : (
-                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80" alt="Senior Pastor of Risen Power Gospel Ministry" className="h-full w-full object-cover" />
-              )}
-            </div>
-          </Reveal>
-          <div className="md:col-span-2">
-            <Reveal>
-              <SectionLabel>Senior Pastor</SectionLabel>
-              <h2 className="font-display text-4xl text-navy">{pastor?.name || "Our Senior Pastor"}</h2>
-              <p className="text-sm text-navy-muted mt-1">{pastor?.title || "Founder & Senior Pastor"}</p>
-              <p className="mt-5 text-navy-soft leading-relaxed whitespace-pre-line">
-                {pastor?.bio || "A passionate teacher of the Word and minister of the Spirit, our pastor has shepherded Risen Power for over a decade, seeing thousands encounter Jesus through bold preaching, prophetic ministry, and a deep love for people."}
-              </p>
-            </Reveal>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-20 bg-navy text-white">
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="text-center mb-12">
-            <span className="section-tag !text-white/70">Service Times</span>
-            <h2 className="font-display text-4xl md:text-5xl text-white mt-3">When We Gather</h2>
-          </div>
-          <div className="grid gap-5 md:grid-cols-4">
-            {services.map((s, i) => (
-              <Reveal key={i} delay={i * 0.08}>
-                <div className="rounded-xl border border-white/15 p-6 text-center hover:bg-white/5 transition">
-                  <p className="text-[10px] uppercase tracking-[0.2em] text-white/60">{s.d}</p>
-                  <p className="font-display text-2xl mt-2">{s.t}</p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="py-20 bg-white">
-        <div className="mx-auto max-w-6xl px-6">
-          <Reveal>
-            <div className="rounded-2xl overflow-hidden border border-border aspect-[16/8] bg-surface relative">
-              <iframe
-                title="Map"
-                className="absolute inset-0 h-full w-full"
-                src="https://www.google.com/maps?q=VITAFOAM+COMFORT+CENTER+DSC+Expressway+Effurun+GRA+Warri+330102+Delta&output=embed"
-                loading="lazy"
-              />
-            </div>
-            <a href="https://maps.app.goo.gl/PtuwLzYDwzKFwocJ9?g_st=ac" target="_blank" rel="noreferrer" className="mt-4 text-sm text-navy-muted text-center inline-flex gap-2 items-center justify-center w-full hover:text-navy"><MapPin size={14} /> VITAFOAM Comfort Center, DSC Expressway, Effurun GRA, Warri 330102, Delta State, Nigeria</a>
-          </Reveal>
-        </div>
-      </section>
-
-      <section className="py-20 bg-surface-alt">
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="text-center mb-12">
-            <SectionLabel>Get Involved</SectionLabel>
-            <h2 className="font-display text-4xl text-navy">Our Ministries</h2>
-          </div>
-          <div className="grid gap-5 md:grid-cols-3">
-            {ministries.map((m, i) => (
-              <Reveal key={m} delay={i * 0.05}>
-                <div className="glass-card p-7 text-center">
-                  <h3 className="font-display text-xl text-navy">{m}</h3>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-    </div>
-  );
-}
