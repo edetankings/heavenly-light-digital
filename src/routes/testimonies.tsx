@@ -14,9 +14,9 @@ export const Route = createFileRoute("/testimonies")({
       { name: "description", content: "Read what God is doing at Risen Power Gospel Ministry — and share your own testimony." },
       { property: "og:title", content: "Testimonies — Risen Power Gospel Ministry" },
       { property: "og:description", content: "Read what God is doing — and share your own testimony." },
-      { property: "og:url", content: "https://risenpower.lovable.app/testimonies" },
+      { property: "og:url", content: `${import.meta.env.VITE_BASE_URL ?? "http://localhost:5173"}/testimonies` },
     ],
-    links: [{ rel: "canonical", href: "https://risenpower.lovable.app/testimonies" }],
+    links: [{ rel: "canonical", href: `${import.meta.env.VITE_BASE_URL ?? "http://localhost:5173"}/testimonies` }],
   }),
   component: Testimonies,
 });
@@ -53,33 +53,3 @@ function Testimonies() {
               <p className="text-sm text-navy-muted">Your story will go to our team for approval before being published.</p>
               <input aria-label="Your name" name="name" required placeholder="Your name" className="w-full rounded-md border border-border px-4 py-2.5 text-sm" />
               <input aria-label="Email address (optional)" name="email" type="email" placeholder="Email (optional)" className="w-full rounded-md border border-border px-4 py-2.5 text-sm" />
-              <input aria-label="Testimony title (optional)" name="title" placeholder="Title (optional)" className="w-full rounded-md border border-border px-4 py-2.5 text-sm" />
-              <textarea aria-label="Your testimony message" name="message" required rows={5} placeholder="What did God do for you?" className="w-full rounded-md border border-border px-4 py-2.5 text-sm" />
-              <button disabled={busy} className="w-full inline-flex items-center justify-center gap-2 rounded-md bg-navy text-white py-3 text-sm font-medium hover:opacity-90 disabled:opacity-50"><Send size={14} /> {busy ? "Sending…" : "Submit Testimony"}</button>
-            </form>
-          </Reveal>
-          <div className="lg:col-span-3 space-y-5">
-            {approved.map((t, i) => (
-              <Reveal key={t.id} delay={i * 0.05}>
-                <article className="glass-card p-7">
-                  <Quote size={22} className="text-navy mb-3" />
-                  {t.title && <h4 className="font-display text-xl text-navy">{t.title}</h4>}
-                  <p className="text-navy-soft leading-relaxed mt-2">{t.message}</p>
-                  <div className="mt-4 flex items-center justify-between gap-3 flex-wrap">
-                    <p className="text-xs uppercase tracking-wider text-navy-muted">— {t.name} · {new Date(t.created_at).toLocaleDateString()}</p>
-                    <ShareMenu url={`/testimonies#${t.id}`} title={t.title || "Testimony"} text={`"${t.message.slice(0, 140)}${t.message.length > 140 ? "…" : ""}" — ${t.name}`} />
-                  </div>
-                </article>
-              </Reveal>
-            ))}
-            {!approved.length && (
-              <div className="glass-card p-10 text-center">
-                <p className="text-navy-muted">Testimonies will appear here as they are approved.</p>
-              </div>
-            )}
-          </div>
-        </div>
-      </section>
-    </div>
-  );
-}

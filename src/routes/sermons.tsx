@@ -11,9 +11,9 @@ export const Route = createFileRoute("/sermons")({
       { name: "description", content: "Browse and listen to anointed sermon messages from Risen Power Gospel Ministry." },
       { property: "og:title", content: "Sermons — Risen Power Gospel Ministry" },
       { property: "og:description", content: "Browse and listen to anointed sermon messages from Risen Power Gospel Ministry." },
-      { property: "og:url", content: "https://risenpower.lovable.app/sermons" },
+      { property: "og:url", content: `${import.meta.env.VITE_BASE_URL ?? "http://localhost:5173"}/sermons` },
     ],
-    links: [{ rel: "canonical", href: "https://risenpower.lovable.app/sermons" }],
+    links: [{ rel: "canonical", href: `${import.meta.env.VITE_BASE_URL ?? "http://localhost:5173"}/sermons` }],
   }),
   component: Sermons,
 });
@@ -43,21 +43,9 @@ function Sermons() {
                       <AudioPlayer
                         src={s.audio_url}
                         title={s.title}
-                        downloadName={(s.audio_name || `${s.title}.mp3`).replace(/[\\/:*?"<>|]/g, "-")}
+                        downloadName={(s.audio_name || `${s.title}.mp3`).replace(/[[\\/:*?"<>|]/g, "-")}
                         allowDownload={s.allow_download !== false}
                       />
                     </div>
                   )}
                   <div className="mt-4 flex justify-end">
-                    <ShareMenu url={`/sermons#${s.id}`} title={s.title} text={`${s.title} — ${s.preacher}`} />
-                  </div>
-                </article>
-              </Reveal>
-            ))}
-            {!loading && !sermons.length && <p className="text-sm text-navy-muted">No sermons yet — check back soon.</p>}
-          </div>
-        </div>
-      </section>
-    </div>
-  );
-}
