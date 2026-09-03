@@ -9,9 +9,9 @@ export const Route = createFileRoute("/blog")({
       { name: "description", content: "Daily devotionals and articles from Risen Power Gospel Ministry." },
       { property: "og:title", content: "Devotionals — Risen Power Gospel Ministry" },
       { property: "og:description", content: "Daily devotionals and articles from Risen Power Gospel Ministry." },
-      { property: "og:url", content: "https://risenpower.lovable.app/blog" },
+      { property: "og:url", content: `${import.meta.env.VITE_BASE_URL ?? "http://localhost:5173"}/blog` },
     ],
-    links: [{ rel: "canonical", href: "https://risenpower.lovable.app/blog" }],
+    links: [{ rel: "canonical", href: `${import.meta.env.VITE_BASE_URL ?? "http://localhost:5173"}/blog` }],
   }),
   component: Blog,
 });

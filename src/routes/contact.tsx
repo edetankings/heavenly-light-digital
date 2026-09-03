@@ -11,9 +11,9 @@ export const Route = createFileRoute("/contact")({
       { name: "description", content: "Reach out to Risen Power Gospel Ministry in Warri, Delta State — we would love to hear from you." },
       { property: "og:title", content: "Contact — Risen Power Gospel Ministry" },
       { property: "og:description", content: "Get in touch with Risen Power Gospel Ministry in Warri, Delta State." },
-      { property: "og:url", content: "https://risenpower.lovable.app/contact" },
+      { property: "og:url", content: `${import.meta.env.VITE_BASE_URL ?? "http://localhost:5173"}/contact` },
     ],
-    links: [{ rel: "canonical", href: "https://risenpower.lovable.app/contact" }],
+    links: [{ rel: "canonical", href: `${import.meta.env.VITE_BASE_URL ?? "http://localhost:5173"}/contact` }],
   }),
   component: Contact,
 });
@@ -49,16 +49,3 @@ function Contact() {
             <form onSubmit={onSubmit} className="glass-card p-8 md:p-10 max-w-3xl mx-auto">
               <div className="grid gap-4 md:grid-cols-2">
                 <input aria-label="Full name" required name="name" placeholder="Full Name" className="rounded-md border border-border px-4 py-3 text-sm text-navy placeholder:text-navy-muted focus:outline-none focus:ring-2 focus:ring-navy" />
-                <input aria-label="Email address" required type="email" name="email" placeholder="Email" className="rounded-md border border-border px-4 py-3 text-sm text-navy placeholder:text-navy-muted focus:outline-none focus:ring-2 focus:ring-navy" />
-                <input aria-label="Phone number" name="phone" placeholder="Phone" className="rounded-md border border-border px-4 py-3 text-sm text-navy placeholder:text-navy-muted focus:outline-none focus:ring-2 focus:ring-navy" />
-                <input aria-label="Subject" required name="subject" placeholder="Subject" className="rounded-md border border-border px-4 py-3 text-sm text-navy placeholder:text-navy-muted focus:outline-none focus:ring-2 focus:ring-navy" />
-              </div>
-              <textarea aria-label="Your message" required rows={5} name="message" placeholder="Your message..." className="mt-4 w-full rounded-md border border-border px-4 py-3 text-sm text-navy placeholder:text-navy-muted focus:outline-none focus:ring-2 focus:ring-navy" />
-              <button type="submit" className="mt-5 inline-flex items-center gap-2 rounded-full bg-navy text-white px-7 py-3 text-sm font-medium hover:opacity-90"><Send size={14} /> Send Message</button>
-            </form>
-          </Reveal>
-        </div>
-      </section>
-    </div>
-  );
-}
