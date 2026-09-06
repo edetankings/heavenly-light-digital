@@ -3,7 +3,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tsconfigPaths from "vite-tsconfig-paths";
 import tailwind from "@tailwindcss/vite";
-import cloudflare from "@cloudflare/vite-plugin";
+import * as cloudflarePkg from "@cloudflare/vite-plugin";
 import * as tanstackStartPkg from "@tanstack/start";
 
 // Some @tanstack/start package versions don't expose a "./plugin" subpath via package exports,
@@ -11,6 +11,9 @@ import * as tanstackStartPkg from "@tanstack/start";
 // Resolve the plugin entry at runtime from the package's available exports to avoid relying on a
 // subpath that may not be present in every release.
 const tanstackStart: any = (tanstackStartPkg as any).plugin ?? (tanstackStartPkg as any).default ?? (tanstackStartPkg as any);
+
+// Some versions of @cloudflare/vite-plugin don't provide a default export; prefer named/default if present.
+const cloudflare: any = (cloudflarePkg as any).default ?? (cloudflarePkg as any).cloudflare ?? (cloudflarePkg as any);
 
 export default defineConfig({
   plugins: [
