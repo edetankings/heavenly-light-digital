@@ -7,7 +7,7 @@ export function AnnouncementBar() {
   const { active } = useAnnouncements();
   const [dismissed, setDismissed] = useState<Record<string, boolean>>({});
   const [idx, setIdx] = useState(0);
-  const visible = active.filter(a => !dismissed[a.id]);
+  const visible = active.filter((a) => !dismissed[a.id]);
   if (!visible.length) return null;
   const a = visible[idx % visible.length];
   return (
@@ -26,9 +26,20 @@ export function AnnouncementBar() {
             <span className="text-white/80">{a.body}</span>
           </div>
           {visible.length > 1 && (
-            <button onClick={() => setIdx(i => i + 1)} className="hidden sm:block text-[10px] uppercase tracking-wider text-white/60 hover:text-white">Next →</button>
+            <button
+              onClick={() => setIdx((i) => i + 1)}
+              className="hidden sm:block text-[10px] uppercase tracking-wider text-white/60 hover:text-white"
+            >
+              Next →
+            </button>
           )}
-          <button onClick={() => setDismissed(d => ({ ...d, [a.id]: true }))} aria-label="Dismiss" className="shrink-0 grid h-6 w-6 place-items-center rounded-full hover:bg-white/10"><X size={12} /></button>
+          <button
+            onClick={() => setDismissed((d) => ({ ...d, [a.id]: true }))}
+            aria-label="Dismiss"
+            className="shrink-0 grid h-6 w-6 place-items-center rounded-full hover:bg-white/10"
+          >
+            <X size={12} />
+          </button>
         </div>
       </motion.div>
     </AnimatePresence>

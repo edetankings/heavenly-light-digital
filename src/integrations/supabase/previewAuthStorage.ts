@@ -1,4 +1,4 @@
-// Neutralized preview auth storage — no Lovable origins or postMessage brokering
+// Use browser storage when available, including during SSR.
 export function brokeredPreviewStorage() {
   if (typeof window === "undefined") return undefined;
   try {

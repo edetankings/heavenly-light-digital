@@ -7,14 +7,20 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
+node_modules/
+dist/
+build/
+coverage/
 dist-ssr
 .output
 .vinxi
-.tanstack/**
+.tanstack/
 .nitro
 *.local
+.env
+.env.*
+!.env.example
+.vercel/
 
 # Wrangler / Cloudflare
 .wrangler/

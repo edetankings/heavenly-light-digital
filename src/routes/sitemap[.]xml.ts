@@ -1,7 +1,6 @@
+import { SITE_URL } from "@/lib/site-url";
 import { createFileRoute } from "@tanstack/react-router";
-import type {} from "@tanstack.react-start";
-
-const BASE_URL = import.meta.env.VITE_BASE_URL ?? "http://localhost:5173";
+import type {} from "@tanstack/react-start";
 
 interface SitemapEntry {
   path: string;
@@ -28,7 +27,7 @@ export const Route = createFileRoute("/sitemap.xml")({
         const urls = entries.map((e) =>
           [
             `  <url>`,
-            `    <loc>${BASE_URL}${e.path}</loc>`,
+            `    <loc>${SITE_URL}${e.path}</loc>`,
             e.changefreq ? `    <changefreq>${e.changefreq}</changefreq>` : null,
             e.priority ? `    <priority>${e.priority}</priority>` : null,
             `  </url>`,
