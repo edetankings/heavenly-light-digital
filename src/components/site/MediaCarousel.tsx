@@ -58,10 +58,7 @@ export function MediaCarousel({
 
   const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
   const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
-  const scrollTo = useCallback(
-    (index: number) => emblaApi?.scrollTo(index),
-    [emblaApi]
-  );
+  const scrollTo = useCallback((index: number) => emblaApi?.scrollTo(index), [emblaApi]);
 
   const { base = 100, sm = 50, md = 33.333, lg = 33.333 } = slideSizes ?? {};
   const [isSm, setIsSm] = useState(false);
@@ -71,7 +68,11 @@ export function MediaCarousel({
     const mSm = window.matchMedia("(min-width: 640px)");
     const mMd = window.matchMedia("(min-width: 768px)");
     const mLg = window.matchMedia("(min-width: 1024px)");
-    const update = () => { setIsSm(mSm.matches); setIsMd(mMd.matches); setIsLg(mLg.matches); };
+    const update = () => {
+      setIsSm(mSm.matches);
+      setIsMd(mMd.matches);
+      setIsLg(mLg.matches);
+    };
     update();
     mSm.addEventListener("change", update);
     mMd.addEventListener("change", update);
@@ -83,7 +84,9 @@ export function MediaCarousel({
     };
   }, []);
   const basis = isLg ? lg : isMd ? md : isSm ? sm : base;
-  useEffect(() => { emblaApi?.reInit(); }, [emblaApi, basis]);
+  useEffect(() => {
+    emblaApi?.reInit();
+  }, [emblaApi, basis]);
 
   return (
     <div className={className}>
@@ -107,9 +110,7 @@ export function MediaCarousel({
                   type="button"
                   onClick={() => scrollTo(i)}
                   className={`h-2 rounded-full transition-all duration-300 ${
-                    i === selectedIndex
-                      ? "w-6 bg-navy"
-                      : "w-2 bg-navy/25 hover:bg-navy/40"
+                    i === selectedIndex ? "w-6 bg-navy" : "w-2 bg-navy/25 hover:bg-navy/40"
                   }`}
                   aria-label={`Go to slide ${i + 1}`}
                 />
@@ -155,7 +156,13 @@ export function MediaCarousel({
   );
 }
 
-export function MediaCarouselCard({ children, className = "" }: { children: ReactNode; className?: string }) {
+export function MediaCarouselCard({
+  children,
+  className = "",
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
   return (
     <Reveal>
       <div className={`h-full ${className}`}>{children}</div>
