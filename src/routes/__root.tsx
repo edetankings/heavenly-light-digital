@@ -8,10 +8,12 @@ import {
   Scripts,
   useRouterState,
 } from "@tanstack/react-router";
-import { AnimatePresence, motion } from "framer-motion";
+import { MotionConfig } from "framer-motion";
 import { Toaster } from "sonner";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
+import { LogoIntro } from "@/components/site/LogoIntro";
+import { isAccountRoute } from "@/lib/site-navigation";
 import appCss from "../styles.css?url";
 
 function NotFoundComponent() {
@@ -123,22 +125,22 @@ function RootShell({ children }: { children: React.ReactNode }) {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const { location } = useRouterState();
-  const isAdmin = location.pathname.startsWith("/portal-rpgm-2026-x9k");
+  const isAccount = isAccountRoute(location.pathname);
   return (
     <QueryClientProvider client={queryClient}>
-      {!isAdmin && <Navbar />}
-      <AnimatePresence mode="wait">
-        <motion.main
-          key={location.pathname}
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -8 }}
-          transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-        >
+      <MotionConfig reducedMotion="user">
+        {!isAccount && (
+          <a className="site-skip-link" href="#main-content">
+            Skip to content
+          </a>
+        )}
+        {!isAccount && <Navbar />}
+        <main id="main-content" tabIndex={-1}>
           <Outlet />
-        </motion.main>
-      </AnimatePresence>
-      {!isAdmin && <Footer />}
+        </main>
+        {!isAccount && <Footer />}
+        {location.pathname === "/" && <LogoIntro />}
+      </MotionConfig>
       <Toaster
         position="bottom-right"
         toastOptions={{
