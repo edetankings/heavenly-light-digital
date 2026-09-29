@@ -36,3 +36,12 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+# Supabase local files
+supabase/.temp/
+supabase/.branches/
+supabase/.env*
+!supabase/.env.example
+
+# Browser test reports
+playwright-report/
+test-results/

@@ -16,6 +16,15 @@ export function Navbar() {
   const [open, setOpen] = useState(false);
   const { location } = useRouterState();
   const reducedMotion = useReducedMotion();
+  const isHome = location.pathname === "/";
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    if (!isHome) return;
+    const update = () => setScrolled(window.scrollY > 32);
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    return () => window.removeEventListener("scroll", update);
+  }, [isHome]);
   useEffect(() => setOpen(false), [location.pathname]);
   useEffect(() => {
     const desktop = window.matchMedia("(min-width: 1280px)");
@@ -27,7 +36,7 @@ export function Navbar() {
   }, []);
 
   return (
-    <header className="site-header">
+    <header className={`site-header ${isHome ? "site-header--home" : ""}`} data-scrolled={scrolled || open}>
       <SiteContainer className="site-header-inner">
         <Link to="/" className="site-brand-link" aria-label="Risen Power Gospel Ministries home">
           <ChurchBrand />
@@ -63,7 +72,7 @@ export function Navbar() {
                 <Menu size={24} aria-hidden="true" />
               </motion.button>
             </SheetTrigger>
-            <SheetContent className="site-mobile-menu">
+            <SheetContent className={`site-mobile-menu ${isHome ? "site-mobile-menu--home" : ""}`}>
               <SheetTitle className="sr-only">Navigation</SheetTitle>
               <SheetDescription className="sr-only">
                 Explore Risen Power Gospel Ministries.

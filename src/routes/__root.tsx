@@ -135,7 +135,7 @@ function RootComponent() {
           </a>
         )}
         {!isAccount && <Navbar />}
-        <main id="main-content" tabIndex={-1}>
+        <main id="main-content" tabIndex={-1} className={location.pathname === "/" ? "rpgm-home-main" : undefined}>
           <Outlet />
         </main>
         {!isAccount && <Footer />}
