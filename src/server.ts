@@ -3,17 +3,13 @@ import "./lib/error-capture";
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
 
-type ServerEntry = {
-  fetch: (request: Request, env: unknown, ctx: unknown) => Promise<Response> | Response;
-};
+import type { ServerEntry } from "@tanstack/react-start/server-entry";
 
 let serverEntryPromise: Promise<ServerEntry> | undefined;
 
 async function getServerEntry(): Promise<ServerEntry> {
   if (!serverEntryPromise) {
-    serverEntryPromise = import("@tanstack/react-start/server-entry").then(
-      (m) => ((m as { default?: ServerEntry }).default ?? (m as unknown as ServerEntry)),
-    );
+    serverEntryPromise = import("@tanstack/react-start/server-entry").then((m) => m.default);
   }
   return serverEntryPromise;
 }
@@ -67,14 +63,14 @@ async function normalizeCatastrophicSsrResponse(response: Response): Promise<Res
 }
 
 export default {
-  async fetch(request: Request, env: unknown, ctx: unknown) {
+  async fetch(request, options) {
     try {
       const handler = await getServerEntry();
-      const response = await handler.fetch(request, env, ctx);
+      const response = await handler.fetch(request, options);
       return await normalizeCatastrophicSsrResponse(response);
     } catch (error) {
       console.error(error);
       return brandedErrorResponse();
     }
   },
-};
+} satisfies ServerEntry;
