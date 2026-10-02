@@ -9,7 +9,12 @@ import tailwind from "@tailwindcss/vite";
 
 export default defineConfig(({ command, mode }) => {
   const env = loadEnv(mode, process.cwd(), "VITE_BASE_URL");
-  const origin = resolveSiteOrigin(env.VITE_BASE_URL, command === "build");
+  const configuredOrigin = env.VITE_BASE_URL?.trim()
+    ? env.VITE_BASE_URL
+    : command === "build" && process.env.VERCEL_ENV === "preview" && process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : env.VITE_BASE_URL;
+  const origin = resolveSiteOrigin(configuredOrigin, command === "build");
   return {
     define: { "import.meta.env.VITE_BASE_URL": JSON.stringify(origin) },
     plugins: [
