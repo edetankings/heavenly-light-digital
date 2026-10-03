@@ -36,7 +36,10 @@ export function Navbar() {
   }, []);
 
   return (
-    <header className={`site-header ${isHome ? "site-header--home" : ""}`} data-scrolled={scrolled || open}>
+    <header
+      className={`site-header ${isHome ? "site-header--home" : ""}`}
+      data-scrolled={scrolled || open}
+    >
       <SiteContainer className="site-header-inner">
         <Link to="/" className="site-brand-link" aria-label="Risen Power Gospel Ministries home">
           <ChurchBrand />
