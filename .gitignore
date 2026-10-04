@@ -1,5 +1,10 @@
+
+# ==========================================
+# RPGM — Git Ignore
+# ==========================================
+
 # Logs
-logs
+logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
@@ -7,35 +12,44 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies
 node_modules/
+
+# Build and framework output
 dist/
 build/
 coverage/
-dist-ssr
-.output
-.vinxi
+dist-ssr/
+.output/
+.vinxi/
 .tanstack/
-.nitro
-*.local
+.nitro/
+
+# Environment variables
 .env
 .env.*
 !.env.example
+*.local
+
+# Vercel local configuration
 .vercel/
 
 # Wrangler / Cloudflare
 .wrangler/
 .dev.vars
+.dev.vars.*
 
-# Editor directories and files
+# Editor files
 .vscode/*
 !.vscode/extensions.json
-.idea
+.idea/
 .DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+
 # Supabase local files
 supabase/.temp/
 supabase/.branches/
@@ -45,3 +59,10 @@ supabase/.env*
 # Browser test reports
 playwright-report/
 test-results/
+
+# Private credentials and backups
+*.pem
+*.key
+*.p12
+*.pfx
+*.sql.bak
