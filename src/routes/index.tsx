@@ -16,7 +16,12 @@ import { AudioPlayer } from "@/components/site/AudioPlayer";
 import { ShareMenu } from "@/components/site/ShareMenu";
 import { ChurchLogo, SiteContainer } from "@/components/site/SitePrimitives";
 import { HomeHero } from "@/components/home/HomeHero";
-import { HomeDataState, HomeHeading, HomePhoto } from "@/components/home/HomeElements";
+import {
+  HomeDataState,
+  HomeHeading,
+  HomePhoto,
+  HomePortraitMedia,
+} from "@/components/home/HomeElements";
 import {
   useSermons,
   useGalleryPhotos,
@@ -150,14 +155,16 @@ function Index() {
           </Reveal>
           <Reveal y={22} delay={0.1}>
             <figure className="home-welcome-portrait">
-              <div className="home-portrait-media">
-                {pastor?.photo_url ? (
+              {pastor?.photo_url ? (
+                <HomePortraitMedia>
                   <HomePhoto
                     src={pastor.photo_url}
                     alt={pastor.name || "Our pastor"}
                     className="home-pastor-photo"
                   />
-                ) : (
+                </HomePortraitMedia>
+              ) : (
+                <div className="home-portrait-media">
                   <div className="home-brand-portrait">
                     <ChurchLogo />
                     <span>
@@ -166,8 +173,8 @@ function Index() {
                       Alive in His power.
                     </span>
                   </div>
-                )}
-              </div>
+                </div>
+              )}
               <figcaption>
                 <span className="home-eyebrow">
                   {pastor?.name ? "A word from our pastor" : "Faith. Fellowship. Family."}

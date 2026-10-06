@@ -13,19 +13,19 @@ These slideshow assets are devotional imagery, not photographs of RPGM people or
 - License: Pexels License, https://www.pexels.com/license/
 - The source permits website use and does not require attribution. The photograph is not used as a logo or to suggest endorsement.
 
-## Christ in the Wilderness
+## Angel raising a hand
 
-- Local file: `public/images/home/christ-in-the-wilderness.jpg`
-- Artist: Ivan Kramskoi (1837-1887), painting dated 1872
-- Source: https://commons.wikimedia.org/wiki/File:Christ_in_the_Wilderness_-_Ivan_Kramskoy_-_Google_Cultural_Institute.jpg
-- Scan: Google Cultural Institute; 1280px reproduction supplied by Wikimedia Commons.
-- Source marks the painting and reproduction as public domain (PD-Art / PD-old-100-expired).
-- This is a historical artistic depiction of Christ, not a photograph or RPGM church portrait.
+- Local file: `public/images/home/angel-raising-hand.jpg`
+- Title: Black and white photography of the raised hand of an angel
+- Photographer: Alexis Herrmann
+- Source: https://www.pexels.com/photo/black-and-white-photography-of-the-raised-hand-of-an-angel-23508627/
+- Download: https://images.pexels.com/photos/23508627/pexels-photo-23508627/free-photo-of-black-and-white-photography-of-the-raised-hand-of-an-angel.jpeg?auto=compress&cs=tinysrgb&w=1600
+- License: Pexels License, https://www.pexels.com/license/
+- The source permits website use and does not require attribution. The photograph depicts an angel statue, not an RPGM church member or location.
 
-Source/license pages reviewed on 2026-10-03. Images are hosted locally to avoid runtime dependence on these external image servers. CSS crops the images responsively without modifying the source artwork.
+Source/license pages reviewed on 2026-10-06. Images are hosted locally to avoid runtime dependence on these external image servers. CSS crops the images responsively without modifying the source artwork.
 
-The third slide is now the cloud photograph below. The hero no longer reads from the gallery and is image-only. The actual gallery, live-stream route, database records and storage URLs are unchanged.
-
+The third slide is the cloud photograph below. The hero slideshow does not read from the gallery. The actual gallery, live-stream route, database records and storage URLs are unchanged.
 
 ## Clouds
 

@@ -14,10 +14,10 @@ const slides = [
     height: 1067,
   },
   {
-    src: "/images/home/christ-in-the-wilderness.jpg",
-    alt: "Christ in the Wilderness, an 1872 painting by Ivan Kramskoi",
-    width: 1280,
-    height: 1122,
+    src: "/images/home/angel-raising-hand.jpg",
+    alt: "An angel statue raising a hand toward the sky",
+    width: 1600,
+    height: 2404,
   },
   {
     src: "/images/home/clouds.jpg",
@@ -31,16 +31,13 @@ export function HomeHero() {
   const hero = useRef<HTMLElement>(null);
   const reducedMotion = useReducedMotion();
   const [parallax, setParallax] = useState(false);
-  const [mounted, setMounted] = useState(false);
   const [failedImages, setFailedImages] = useState<string[]>([]);
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
   const [visible, setVisible] = useState(true);
   const { scrollYProgress } = useScroll({ target: hero, offset: ["start start", "end start"] });
   const offset = useTransform(scrollYProgress, [0, 1], [0, 32]);
-
   useEffect(() => {
-    setMounted(true);
     const preference = window.matchMedia(
       "(min-width: 1024px) and (pointer: fine) and (prefers-reduced-motion: no-preference)",
     );
@@ -57,25 +54,25 @@ export function HomeHero() {
   }, []);
 
   useEffect(() => {
-    if (!mounted || reducedMotion !== false || paused || !visible) return;
+    if (reducedMotion !== false || paused || !visible) return;
     const timer = window.setInterval(
       () => setActive((current) => (current + 1) % slides.length),
       3000,
     );
     return () => window.clearInterval(timer);
-  }, [mounted, reducedMotion, paused, visible]);
+  }, [reducedMotion, paused, visible]);
 
   return (
     <section
       ref={hero}
       className="home-hero"
       aria-labelledby="home-title"
-      onFocusCapture={(event) => {
-        if (
-          !(event.target instanceof HTMLElement) ||
-          !event.target.hasAttribute("data-slideshow-toggle")
-        )
-          setPaused(true);
+      onFocusCapture={() => setPaused(true)}
+      onBlurCapture={(event) => {
+        const nextTarget = event.relatedTarget;
+        if (!(nextTarget instanceof Node) || !event.currentTarget.contains(nextTarget)) {
+          setPaused(false);
+        }
       }}
     >
       <motion.div
@@ -161,17 +158,6 @@ export function HomeHero() {
             Effurun, Warri <span aria-hidden="true">/</span> Delta State, Nigeria
           </span>
         </a>
-        {mounted && reducedMotion === false && (
-          <button
-            type="button"
-            data-slideshow-toggle
-            className="home-slideshow-toggle"
-            aria-controls="home-slides"
-            onClick={() => setPaused((current) => !current)}
-          >
-            {paused ? "Resume animation" : "Pause animation"}
-          </button>
-        )}
       </SiteContainer>
     </section>
   );
