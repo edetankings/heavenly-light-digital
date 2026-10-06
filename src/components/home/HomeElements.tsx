@@ -1,4 +1,5 @@
-import { useState, type ReactNode } from "react";
+import { useState, type PointerEvent, type ReactNode } from "react";
+import { motion, useMotionValue, useReducedMotion, useSpring } from "framer-motion";
 import { ArrowUpRight, ImageOff } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { Reveal } from "@/components/site/Section";
@@ -87,5 +88,35 @@ export function HomePhoto({
       className={className}
       onError={() => setFailed(src)}
     />
+  );
+}
+
+export function HomePortraitMedia({ children }: { children: ReactNode }) {
+  const reducedMotion = useReducedMotion();
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const smoothX = useSpring(x, { stiffness: 180, damping: 24, mass: 0.6 });
+  const smoothY = useSpring(y, { stiffness: 180, damping: 24, mass: 0.6 });
+
+  const moveWithPointer = (event: PointerEvent<HTMLDivElement>) => {
+    if (reducedMotion !== false || event.pointerType !== "mouse") return;
+    const bounds = event.currentTarget.getBoundingClientRect();
+    x.set(((event.clientX - bounds.left) / bounds.width - 0.5) * 18);
+    y.set(((event.clientY - bounds.top) / bounds.height - 0.5) * 18);
+  };
+
+  return (
+    <div
+      className="home-portrait-media"
+      onPointerMove={moveWithPointer}
+      onPointerLeave={() => {
+        x.set(0);
+        y.set(0);
+      }}
+    >
+      <motion.div className="home-portrait-motion-track" style={{ x: smoothX, y: smoothY }}>
+        {children}
+      </motion.div>
+    </div>
   );
 }

@@ -19,12 +19,11 @@ export function Navbar() {
   const isHome = location.pathname === "/";
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
-    if (!isHome) return;
     const update = () => setScrolled(window.scrollY > 32);
     update();
     window.addEventListener("scroll", update, { passive: true });
     return () => window.removeEventListener("scroll", update);
-  }, [isHome]);
+  }, []);
   useEffect(() => setOpen(false), [location.pathname]);
   useEffect(() => {
     const desktop = window.matchMedia("(min-width: 1280px)");
